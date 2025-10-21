@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyWiseGuide – Emergency Fund Calculator (₹ INR)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8">
+    
+    <style>
+        :root {
+            --mwg-color-bg: #FFFFFF;
+            --mwg-color-surface: #F7FAFC;
+            --mwg-color-text: #102A43;
+            --mwg-color-brand: #0B1F3B;
+            --mwg-color-accent: #FF7A21;
+            --mwg-color-muted: #8795A1;
+            --mwg-radius: 12px;
+            --mwg-shadow: 0 6px 18px rgba(16,42,67,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--mwg-color-bg);
+            color: var(--mwg-color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--mwg-color-brand);
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: -0.2px;
+        }
+        
+        /* Override global h1 styling for hero sections */
+        .hero-gradient h1 {
+            color: white !important;
+        }
+
+        .mwg-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mwg-card {
+            background: var(--mwg-color-surface);
+            border-radius: var(--mwg-radius);
+            box-shadow: var(--mwg-shadow);
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid #E1E8F0;
+        }
+
+        .mwg-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--mwg-color-brand);
+            color: #fff;
+            border: 0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .mwg-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(11,31,59,.18);
+        }
+
+        .mwg-btn.outline {
+            background: #fff;
+            color: var(--mwg-color-brand);
+            border: 2px solid var(--mwg-color-brand);
+        }
+
+        .mwg-input, .mwg-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #D9E2EC;
+            background: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .mwg-input:focus, .mwg-select:focus {
+            outline: 2px solid var(--mwg-color-accent);
+            border-color: var(--mwg-color-accent);
+        }
+
+        .mwg-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .mwg-table th, .mwg-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #EEF2F7;
+            text-align: left;
+        }
+
+        .mwg-table th {
+            background: #EFF6FF;
+            color: #334E68;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .mwg-table td:not(:first-child) {
+            text-align: right;
+        }
+
+        .mwg-table tbody tr:nth-child(odd) {
+            background: #FAFBFC;
+        }
+
+        .mwg-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #E1E8F0;
+            box-shadow: 0 2px 10px rgba(16,42,67,.06);
+            font-size: 0.9rem;
+        }
+
+        .mwg-badge img {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+        }
+
+        .mwg-badge .name {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 700;
+            color: var(--mwg-color-brand);
+            letter-spacing: 0.2px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, var(--mwg-color-brand) 0%, #1a365d 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--mwg-radius);
+            text-align: center;
+            box-shadow: var(--mwg-shadow);
+        }
+
+        .result-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--mwg-color-brand);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--mwg-color-muted);
+            margin-top: 0.25rem;
+        }
+
+        .nav-menu {
+            background: var(--mwg-color-brand);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .nav-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--mwg-color-accent);
+        }
+
+        .expense-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .category-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #E1E8F0;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .category-details {
+            flex: 1;
+        }
+
+        .category-label {
+            font-weight: 600;
+            color: var(--mwg-color-brand);
+            margin-bottom: 0.25rem;
+        }
+
+        .category-amount {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #D9E2EC;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .mwg-container {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .expense-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb {
+            background: #f8fafc;
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--mwg-color-brand);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--mwg-color-accent);
+        }
+
+         {
+            .actions-row, .nav-menu, .breadcrumb {
+                display: none !important;
+            }
+        }
+        
+        /* Consistent MoneyWiseGuide Design System */
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-navy { background-color: var(--mwg-color-brand); }
+        .bg-orange { background-color: var(--mwg-color-accent); }
+        .text-navy { color: var(--mwg-color-brand); }
+        .text-orange { color: var(--mwg-color-accent); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0B1F3B 0%, #1a365d 100%) !important;
+            color: white !important;
+        }
+        
+        .hero-gradient h1,
+        .hero-gradient .brand-font {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+        }
+        
+        .hero-gradient p {
+            color: white !important;
+            opacity: 0.95 !important;
+        }
+        
+        /* Override Tailwind and global h1 styles for hero section */
+        .hero-gradient .text-4xl,
+        .hero-gradient .md\:text-5xl,
+        .hero-gradient .font-bold,
+        .hero-gradient .text-xl {
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--mwg-color-accent);
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 280px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--mwg-color-brand);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 300px;
+            background-color: var(--mwg-color-brand);
+            transition: all 0.3s ease;
+            z-index: 999;
+            padding: 80px 20px 20px;
+        }
+        
+        .mobile-nav.open {
+            right: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px 0;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-nav a:hover {
+            color: var(--mwg-color-accent);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+        }
+        
+        /* Footer Styles */
+        .footer {
+            background-color: var(--mwg-color-brand);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--mwg-color-accent);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-section a {
+            color: #cbd5e0;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--mwg-color-accent);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #2d3748;
+            padding-top: 20px;
+            text-align: center;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+        <!-- Header -->
+    <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                    <div class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+                    
+                    <!-- Calculators Dropdown -->
+                    <div class="dropdown">
+                        <a href="/calculators" class="nav-link"><i class="fas fa-calculator mr-2"></i>Calculators <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/calculators/sip"><i class="fas fa-chart-line text-orange mr-2"></i>SIP Calculator</a>
+                            <a href="/calculators/lumpsum"><i class="fas fa-coins text-orange mr-2"></i>Lumpsum Calculator</a>
+                            <a href="/calculators/fixed-deposit"><i class="fas fa-university text-orange mr-2"></i>Fixed Deposit Calculator</a>
+                            <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt text-orange mr-2"></i>Recurring Deposit Calculator</a>
+                            <a href="/calculators/mortgage"><i class="fas fa-home text-orange mr-2"></i>Mortgage Calculator</a>
+                            <a href="/calculators/debt-payoff"><i class="fas fa-credit-card text-orange mr-2"></i>Debt Payoff Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Dropdown -->
+                    <div class="dropdown">
+                        <a href="/tools" class="nav-link"><i class="fas fa-tools mr-2"></i>Tools <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/tools/budget-tracker"><i class="fas fa-chart-pie text-orange mr-2"></i>Budget Tracker</a>
+                            <a href="/tools/expense-manager"><i class="fas fa-shopping-cart text-orange mr-2"></i>Expense Manager</a>
+                            <a href="/tools/emergency-fund"><i class="fas fa-shield-alt text-orange mr-2"></i>Emergency Fund Calculator</a>
+                            <a href="/tools/retirement-planner"><i class="fas fa-umbrella-beach text-orange mr-2"></i>Retirement Planner</a>
+                            <a href="/tools/goals-planner"><i class="fas fa-target text-orange mr-2"></i>Goals Planner</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/blog" class="nav-link"><i class="fas fa-blog mr-2"></i>Blog</a>
+                    <a href="/contact" class="nav-link"><i class="fas fa-envelope mr-2"></i>Contact</a>
+                </nav>
+                
+                <!-- Mobile menu button -->
+                <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/"><i class="fas fa-home mr-2"></i>Home</a>
+        <a href="/calculators/sip"><i class="fas fa-chart-line mr-2"></i>SIP Calculator</a>
+        <a href="/calculators/lumpsum"><i class="fas fa-coins mr-2"></i>Lumpsum Calculator</a>
+        <a href="/calculators/fixed-deposit"><i class="fas fa-university mr-2"></i>Fixed Deposit Calculator</a>
+        <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt mr-2"></i>Recurring Deposit Calculator</a>
+        <a href="/calculators/mortgage"><i class="fas fa-home mr-2"></i>Mortgage Calculator</a>
+        <a href="/calculators/debt-payoff"><i class="fas fa-credit-card mr-2"></i>Debt Payoff Calculator</a>
+        <a href="/tools/budget-tracker"><i class="fas fa-chart-pie mr-2"></i>Budget Tracker</a>
+        <a href="/tools/expense-manager"><i class="fas fa-shopping-cart mr-2"></i>Expense Manager</a>
+        <a href="/tools/emergency-fund"><i class="fas fa-shield-alt mr-2"></i>Emergency Fund Calculator</a>
+        <a href="/tools/goals-planner"><i class="fas fa-target mr-2"></i>Goals Planner</a>
+        <a href="/blog"><i class="fas fa-blog mr-2"></i>Blog</a>
+        <a href="/contact"><i class="fas fa-envelope mr-2"></i>Contact</a>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="hero-gradient rounded-2xl p-8 mb-8 text-white">
+            <div class="text-center">
+                <h1 class="brand-font text-4xl md:text-5xl font-bold mb-4">Emergency Fund Calculator</h1>
+                <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                    Calculate your emergency fund requirement and create a savings plan to build financial security for unexpected situations.
+                </p>
+            </div>
+        </div>
+
+    <!-- Main Content -->
+    <div class="mwg-container">
+
+        <!-- Input Section -->
+        <div class="mwg-card">
+            <h2><i class="fas fa-calculator mr-2"></i>Emergency Fund Parameters</h2>
+            
+            <div class="input-group">
+                <label for="coverageMonths">Months of Coverage</label>
+                <input type="number" id="coverageMonths" class="mwg-input" value="6" min="1" max="24" step="1">
+                <div class="help-text">Recommended: 3-6 months for stable jobs, 6-12 months for variable income</div>
+            </div>
+
+            <div class="input-group">
+                <label for="riskFactor">Employment Risk Factor</label>
+                <select id="riskFactor" class="mwg-select">
+                    <option value="1.0">Low Risk (Government/Stable Corporate)</option>
+                    <option value="1.2" selected>Moderate Risk (Private Sector)</option>
+                    <option value="1.5">High Risk (Freelance/Startup)</option>
+                    <option value="1.8">Very High Risk (Seasonal/Commission)</option>
+                </select>
+                <div class="help-text">Higher risk jobs may need larger emergency funds</div>
+            </div>
+
+            <div class="input-group">
+                <label for="dependents">Number of Dependents</label>
+                <input type="number" id="dependents" class="mwg-input" value="0" min="0" max="10" step="1">
+                <div class="help-text">Each dependent typically increases emergency fund needs by 10-15%</div>
+            </div>
+
+            <div class="input-group">
+                <label for="targetPeriod">Target Period to Build Fund (Months)</label>
+                <input type="number" id="targetPeriod" class="mwg-input" value="12" min="1" max="60" step="1">
+                <div class="help-text">How many months do you want to take to build your complete emergency fund?</div>
+            </div>
+
+            <h3 class="mt-6 mb-4"><i class="fas fa-list mr-2"></i>Monthly Essential Expenses</h3>
+            <div class="help-text mb-4">Enter your essential monthly expenses by category. Only include expenses you cannot eliminate in an emergency.</div>
+            
+            <div class="expense-categories" id="expenseCategories">
+                <!-- Expense categories will be populated by JavaScript -->
+            </div>
+
+            <button onclick="calculateEmergencyFund()" class="mwg-btn mt-4">
+                <i class="fas fa-calculator"></i> Calculate Emergency Fund
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="mwg-card" style="display: none;">
+            <h2><i class="fas fa-chart-bar mr-2"></i>Emergency Fund Analysis</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="label">Recommended Fund Size</div>
+                    <div class="value" id="recommendedFund">₹0</div>
+                </div>
+                <div class="result-card">
+                    <div class="label">Monthly Expenses</div>
+                    <div class="value" id="totalMonthlyExpenses">₹0</div>
+                </div>
+                <div class="result-card">
+                    <div class="label">Monthly Savings Needed</div>
+                    <div class="value" id="monthlySavings">₹0</div>
+                </div>
+                <div class="result-card">
+                    <div class="label">Time to Goal</div>
+                    <div class="value" id="timeToGoal">0 months</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3>Expense Composition</h3>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3>Fund Progress</h3>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funding Plan Table -->
+            <div class="mt-6">
+                <h3><i class="fas fa-table mr-2"></i>Yearly Funding Plan</h3>
+                <div class="overflow-x-auto">
+                    <table class="mwg-table" id="fundingPlanTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Starting Balance</th>
+                                <th>Annual Savings</th>
+                                <th>Growth (2% APY)</th>
+                                <th>Ending Balance</th>
+                                <th>% of Goal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fundingPlanBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions-row">
+                <button onclick="exportToPDF()" class="mwg-btn">
+                    <i class="fas fa-file-pdf"></i> Export PDF Report
+                </button>
+                <button onclick="exportToCSV()" class="mwg-btn outline">
+                    <i class="fas fa-file-csv"></i> Export CSV Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        // Global variables
+        let expenseChart, progressChart;
+        let calculationResults = {};
+
+        // Expense categories with icons and colors
+        const expenseCategories = [
+            { id: 'housing', label: 'Housing', icon: '🏠', color: '#0B1F3B', help: 'Rent/EMI, property tax, maintenance' },
+            { id: 'utilities', label: 'Utilities', icon: '💡', color: '#FF7A21', help: 'Electricity, water, gas, internet' },
+            { id: 'food', label: 'Food & Groceries', icon: '🍽️', color: '#10B981', help: 'Essential groceries and basic meals' },
+            { id: 'transport', label: 'Transportation', icon: '🚗', color: '#3B82F6', help: 'Fuel, public transport, vehicle maintenance' },
+            { id: 'insurance', label: 'Insurance', icon: '🛡️', color: '#8B5CF6', help: 'Health, life, vehicle insurance premiums' },
+            { id: 'debt', label: 'Debt Payments', icon: '💳', color: '#EF4444', help: 'Minimum payments on loans and credit cards' },
+            { id: 'healthcare', label: 'Healthcare', icon: '🏥', color: '#F59E0B', help: 'Essential medical expenses and medicines' },
+            { id: 'childcare', label: 'Childcare/Education', icon: '👶', color: '#EC4899', help: 'School fees, daycare, essential supplies' }
+        ];
+
+        // Currency formatting
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        };
+
+        const sanitize = (value) => {
+            if (value === undefined || value === null) return '';
+            return String(value).replace(/\u00B9/g, '');
+        };
+
+        // Initialize expense categories
+        function initializeExpenseCategories() {
+            const container = document.getElementById('expenseCategories');
+            container.innerHTML = '';
+
+            expenseCategories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category-input';
+                categoryDiv.innerHTML = `
+                    <div class="category-icon" style="background-color: ${category.color}">
+                        ${category.icon}
+                    </div>
+                    <div class="category-details">
+                        <div class="category-label">${category.label}</div>
+                        <input type="number" 
+                               id="${category.id}" 
+                               class="category-amount mwg-input" 
+                               placeholder="₹0" 
+                               min="0" 
+                               step="100"
+                               title="${category.help}">
+                        <div class="help-text">${category.help}</div>
+                    </div>
+                `;
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        // Calculate emergency fund
+        function calculateEmergencyFund() {
+            // Get input values
+            const coverageMonths = parseFloat(document.getElementById('coverageMonths').value) || 6;
+            const riskFactor = parseFloat(document.getElementById('riskFactor').value) || 1.2;
+            const dependents = parseInt(document.getElementById('dependents').value) || 0;
+            const targetPeriod = parseInt(document.getElementById('targetPeriod').value) || 12;
+
+            // Calculate total monthly expenses
+            let totalMonthlyExpenses = 0;
+            const expenseBreakdown = {};
+
+            expenseCategories.forEach(category => {
+                const amount = parseFloat(document.getElementById(category.id).value) || 0;
+                totalMonthlyExpenses += amount;
+                if (amount > 0) {
+                    expenseBreakdown[category.label] = {
+                        amount: amount,
+                        color: category.color
+                    };
+                }
+            });
+
+            if (totalMonthlyExpenses === 0) {
+                alert('Please enter at least one expense category.');
+                return;
+            }
+
+            // Apply risk and dependent factors
+            const dependentFactor = 1 + (dependents * 0.125); // 12.5% per dependent
+            const adjustedMonthlyExpenses = totalMonthlyExpenses * riskFactor * dependentFactor;
+            
+            // Calculate recommended fund size
+            const recommendedFund = adjustedMonthlyExpenses * coverageMonths;
+
+            // Use user's target period to calculate monthly savings
+            const targetMonths = targetPeriod;
+            const monthlySavings = recommendedFund / targetMonths;
+
+            // Store results
+            calculationResults = {
+                totalMonthlyExpenses,
+                adjustedMonthlyExpenses,
+                recommendedFund,
+                monthlySavings,
+                targetMonths,
+                coverageMonths,
+                riskFactor,
+                dependents,
+                expenseBreakdown
+            };
+
+            // Update UI
+            updateResults();
+            createCharts();
+            createFundingPlanTable();
+
+            // Show results section
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update results display
+        function updateResults() {
+            const { totalMonthlyExpenses, recommendedFund, monthlySavings, targetMonths } = calculationResults;
+
+            document.getElementById('totalMonthlyExpenses').textContent = formatCurrency(totalMonthlyExpenses);
+            document.getElementById('recommendedFund').textContent = formatCurrency(recommendedFund);
+            document.getElementById('monthlySavings').textContent = formatCurrency(monthlySavings);
+            document.getElementById('timeToGoal').textContent = `${targetMonths} months`;
+        }
+
+        // Create charts
+        function createCharts() {
+            const { expenseBreakdown, recommendedFund } = calculationResults;
+
+            // Destroy existing charts
+            if (expenseChart) expenseChart.destroy();
+            if (progressChart) progressChart.destroy();
+
+            // Expense composition chart
+            const expenseLabels = Object.keys(expenseBreakdown);
+            const expenseData = expenseLabels.map(label => expenseBreakdown[label].amount);
+            const expenseColors = expenseLabels.map(label => expenseBreakdown[label].color);
+
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            expenseChart = new Chart(expenseCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: expenseLabels,
+                    datasets: [{
+                        data: expenseData,
+                        backgroundColor: expenseColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                },
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = formatCurrency(context.parsed);
+                                    const percent = ((context.parsed / expenseData.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                    return `${context.label}: ${value} (${percent}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Progress chart (showing fund building over user's target period)
+            const months = Array.from({ length: calculationResults.targetMonths + 1 }, (_, i) => i);
+            const monthlyGrowthRate = Math.pow(1.02, 1/12) - 1; // Convert 2% annual to monthly
+            const fundProgress = months.map(month => {
+                if (month === 0) return 0;
+                // Calculate with compound growth
+                let balance = 0;
+                for (let m = 1; m <= month; m++) {
+                    balance = (balance + calculationResults.monthlySavings) * (1 + monthlyGrowthRate);
+                }
+                return balance;
+            });
+            
+            const progressCtx = document.getElementById('progressChart').getContext('2d');
+            progressChart = new Chart(progressCtx, {
+                type: 'line',
+                data: {
+                    labels: months.map(m => m === 0 ? 'Start' : `Month ${m}`),
+                    datasets: [{
+                        label: 'Emergency Fund Balance',
+                        data: fundProgress,
+                        borderColor: '#0B1F3B',
+                        backgroundColor: 'rgba(11, 31, 59, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#FF7A21',
+                        pointBorderColor: '#0B1F3B',
+                        pointRadius: 4
+                    }, {
+                        label: 'Target Amount',
+                        data: months.map(() => recommendedFund),
+                        borderColor: '#FF7A21',
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                },
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create funding plan table
+        function createFundingPlanTable() {
+            const { recommendedFund, monthlySavings } = calculationResults;
+            const tbody = document.getElementById('fundingPlanBody');
+            tbody.innerHTML = '';
+
+            const annualSavings = monthlySavings * 12;
+            const growthRate = 0.02; // 2% annual growth
+            let balance = 0;
+
+            for (let year = 1; year <= 5; year++) {
+                const startBalance = balance;
+                const growth = balance * growthRate;
+                balance = balance + annualSavings + growth;
+                const percentOfGoal = Math.min((balance / recommendedFund) * 100, 100);
+
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>Year ${year}</td>
+                    <td>${formatCurrency(startBalance)}</td>
+                    <td>${formatCurrency(annualSavings)}</td>
+                    <td>${formatCurrency(growth)}</td>
+                    <td>${formatCurrency(balance)}</td>
+                    <td>${percentOfGoal.toFixed(1)}%</td>
+                `;
+
+                if (balance >= recommendedFund && year > 1) break;
+            }
+        }
+
+        // Export to PDF
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            if (!jsPDF) {
+                alert('PDF export functionality is not available. Please try again.');
+                return;
+            }
+
+            const doc = new jsPDF('p', 'pt', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 40;
+
+            // Add watermark
+            const addWatermark = (doc, pageW, pageH) => {
+                try {
+                    const centerX = pageW / 2;
+                    const centerY = pageH / 2;
+                    
+                    doc.saveGraphicsState();
+                    doc.setGState && doc.setGState({ opacity: 0.08 });
+                    doc.setTextColor(160, 160, 160);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(48);
+                    doc.text('MoneyWiseGuide', centerX, centerY + 30, { align: 'center', angle: 315 });
+                    doc.restoreGraphicsState();
+                } catch (e) {
+                    console.warn('Watermark failed:', e);
+                }
+            };
+
+            let y = 40;
+
+            // Header with logo and badge
+            try {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(14);
+                doc.text('MoneyWiseGuide', pageWidth - margin, 38, { align: 'right' });
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.setTextColor(130);
+                doc.text('Emergency Fund Calculator Report', pageWidth - margin, 56, { align: 'right' });
+                doc.setTextColor(0);
+            } catch (e) {
+                console.warn('Header failed:', e);
+            }
+
+            y = 80;
+
+            // Title
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(18);
+            doc.text('Emergency Fund Analysis Report', margin, y);
+            y += 30;
+
+            // KPIs
+            const { totalMonthlyExpenses, recommendedFund, monthlySavings, targetMonths } = calculationResults;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.text('Key Results', margin, y);
+            y += 15;
+
+            const kpiData = [
+                ['Monthly Essential Expenses', sanitize(formatCurrency(totalMonthlyExpenses))],
+                ['Recommended Fund Size', sanitize(formatCurrency(recommendedFund))],
+                ['Required Monthly Savings', sanitize(formatCurrency(monthlySavings))],
+                ['Time to Goal', `${targetMonths} months`]
+            ];
+
+            doc.autoTable({
+                startY: y,
+                head: [['Metric', 'Value']],
+                body: kpiData,
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 10,
+                    cellPadding: 8
+                },
+                headStyles: {
+                    fillColor: [239, 246, 255],
+                    textColor: [51, 78, 104]
+                },
+                margin: { left: margin, right: margin },
+                theme: 'striped',
+                didDrawPage: () => addWatermark(doc, pageWidth, doc.internal.pageSize.getHeight())
+            });
+
+            y = doc.lastAutoTable.finalY + 20;
+
+            // Expense Breakdown
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.text('Expense Breakdown', margin, y);
+            y += 15;
+
+            const expenseData = Object.entries(calculationResults.expenseBreakdown).map(([category, data]) => [
+                category,
+                sanitize(formatCurrency(data.amount)),
+                `${((data.amount / totalMonthlyExpenses) * 100).toFixed(1)}%`
+            ]);
+
+            doc.autoTable({
+                startY: y,
+                head: [['Category', 'Monthly Amount', 'Percentage']],
+                body: expenseData,
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 9,
+                    cellPadding: 6
+                },
+                headStyles: {
+                    fillColor: [239, 246, 255],
+                    textColor: [51, 78, 104]
+                },
+                margin: { left: margin, right: margin },
+                theme: 'striped',
+                didDrawPage: () => addWatermark(doc, pageWidth, doc.internal.pageSize.getHeight())
+            });
+
+            y = doc.lastAutoTable.finalY + 20;
+
+            // Funding Plan
+            if (y > 650) {
+                doc.addPage();
+                y = margin;
+            }
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.text('5-Year Funding Plan', margin, y);
+            y += 15;
+
+            // Generate funding plan data
+            const fundingPlanData = [];
+            const annualSavings = monthlySavings * 12;
+            let balance = 0;
+
+            for (let year = 1; year <= 5; year++) {
+                const startBalance = balance;
+                const growth = balance * 0.02;
+                balance = balance + annualSavings + growth;
+                const percentOfGoal = Math.min((balance / recommendedFund) * 100, 100);
+
+                fundingPlanData.push([
+                    `Year ${year}`,
+                    sanitize(formatCurrency(startBalance)),
+                    sanitize(formatCurrency(annualSavings)),
+                    sanitize(formatCurrency(growth)),
+                    sanitize(formatCurrency(balance)),
+                    `${percentOfGoal.toFixed(1)}%`
+                ]);
+
+                if (balance >= recommendedFund && year > 1) break;
+            }
+
+            doc.autoTable({
+                startY: y,
+                head: [['Year', 'Start Balance', 'Annual Savings', 'Growth (2%)', 'End Balance', '% of Goal']],
+                body: fundingPlanData,
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 9,
+                    cellPadding: 6,
+                    halign: 'right'
+                },
+                headStyles: {
+                    fillColor: [239, 246, 255],
+                    textColor: [51, 78, 104],
+                    halign: 'left'
+                },
+                columnStyles: {
+                    0: { halign: 'left' }
+                },
+                margin: { left: margin, right: margin },
+                theme: 'striped',
+                didDrawPage: () => addWatermark(doc, pageWidth, doc.internal.pageSize.getHeight())
+            });
+
+            // Footer with disclaimers
+            const finalY = doc.lastAutoTable.finalY + 20;
+            if (finalY > 700) {
+                doc.addPage();
+                y = margin;
+            } else {
+                y = finalY;
+            }
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.text('Important Notes', margin, y);
+            y += 15;
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            const notes = [
+                '• This calculator provides estimates based on the information you provided.',
+                '• Emergency fund needs may vary based on personal circumstances and market conditions.',
+                '• The 2% growth assumption is conservative; actual returns may vary.',
+                '• Consider consulting with a financial advisor for personalized advice.',
+                '• Review and adjust your emergency fund regularly as your circumstances change.'
+            ];
+
+            notes.forEach(note => {
+                const lines = doc.splitTextToSize(sanitize(note), pageWidth - 2 * margin);
+                doc.text(lines, margin, y);
+                y += 12;
+            });
+
+            // Generate and save
+            const timestamp = new Date().toISOString().slice(0, 10);
+            doc.save(`Emergency_Fund_Calculator_${timestamp}.pdf`);
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const { totalMonthlyExpenses, recommendedFund, monthlySavings, targetMonths } = calculationResults;
+            
+            const timestamp = new Date().toISOString();
+            
+            // Metadata
+            const csvContent = [
+                'Site,MoneyWiseGuide',
+                'Report,Emergency Fund Calculator',
+                `GeneratedAt,${timestamp}`,
+                '',
+                // Summary
+                'Summary,,',
+                'Metric,Value,',
+                `Monthly Essential Expenses,${totalMonthlyExpenses},`,
+                `Recommended Fund Size,${recommendedFund},`,
+                `Required Monthly Savings,${monthlySavings},`,
+                `Time to Goal (months),${targetMonths},`,
+                '',
+                // Expense Breakdown
+                'Expense Breakdown,,',
+                'Category,Monthly Amount,Percentage',
+                ...Object.entries(calculationResults.expenseBreakdown).map(([category, data]) => 
+                    `${category},${data.amount},${((data.amount / totalMonthlyExpenses) * 100).toFixed(1)}`
+                ),
+                '',
+                // Funding Plan
+                'Funding Plan,,,,',
+                'Year,Start Balance,Annual Savings,Growth,End Balance,Percent of Goal'
+            ];
+
+            // Generate funding plan data for CSV
+            const annualSavings = monthlySavings * 12;
+            let balance = 0;
+
+            for (let year = 1; year <= 5; year++) {
+                const startBalance = balance;
+                const growth = balance * 0.02;
+                balance = balance + annualSavings + growth;
+                const percentOfGoal = Math.min((balance / recommendedFund) * 100, 100);
+
+                csvContent.push(`Year ${year},${startBalance},${annualSavings},${growth},${balance},${percentOfGoal.toFixed(1)}`);
+
+                if (balance >= recommendedFund && year > 1) break;
+            }
+
+            // Create and download CSV
+            const csv = csvContent.join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Emergency_Fund_Calculator_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Auto-update functionality with debouncing
+        let updateTimeout;
+        function autoUpdate() {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                const totalExpenses = expenseCategories.reduce((sum, category) => {
+                    const amount = parseFloat(document.getElementById(category.id).value) || 0;
+                    return sum + amount;
+                }, 0);
+                
+                if (totalExpenses > 0) {
+                    calculateEmergencyFund();
+                }
+            }, 500);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeExpenseCategories();
+
+            // Add auto-update event listeners
+            const inputs = ['coverageMonths', 'riskFactor', 'dependents', 'targetPeriod'];
+            inputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', autoUpdate);
+                    element.addEventListener('change', autoUpdate);
+                }
+            });
+
+            // Add event listeners to expense categories after they're created
+            setTimeout(() => {
+                expenseCategories.forEach(category => {
+                    const input = document.getElementById(category.id);
+                    if (input) {
+                        input.addEventListener('input', autoUpdate);
+                        input.addEventListener('change', autoUpdate);
+                    }
+                });
+            }, 100);
+
+            // Set Chart.js defaults
+            if (window.Chart) {
+                Chart.defaults.font.family = 'Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif';
+                Chart.defaults.plugins.legend.labels.boxWidth = 12;
+                Chart.defaults.plugins.legend.labels.usePointStyle = true;
+                Chart.defaults.plugins.tooltip.titleFont = { family: 'Inter', size: 12, weight: '600' };
+                Chart.defaults.plugins.tooltip.bodyFont = { family: 'Inter', size: 11 };
+            }
+        });
+    </script>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                        <h3 class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Your comprehensive financial planning companion. Make informed decisions with our professional calculators and tools designed for Indian financial markets.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Calculators</h3>
+                    <a href="/calculators/sip">SIP Calculator</a>
+                    <a href="/calculators/lumpsum">Lumpsum Calculator</a>
+                    <a href="/calculators/fixed-deposit">Fixed Deposit Calculator</a>
+                    <a href="/calculators/recurring-deposit">Recurring Deposit Calculator</a>
+                    <a href="/calculators/mortgage">Mortgage Calculator</a>
+                    <a href="/calculators/debt-payoff">Debt Payoff Calculator</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Planning Tools</h3>
+                    <a href="/tools/budget-tracker">Budget Tracker</a>
+                    <a href="/tools/expense-manager">Expense Manager</a>
+                    <a href="/tools/emergency-fund">Emergency Fund Calculator</a>
+                    <a href="/tools/retirement-planner">Retirement Planner</a>
+                    <a href="/tools/goals-planner">Goals Planner</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="/blog">Financial Blog</a>
+                    <a href="/guides">Planning Guides</a>
+                    <a href="/about">About Us</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/terms-of-service">Terms of Service</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MoneyWiseGuide. All rights reserved. | Designed for Indian financial planning and investment needs.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

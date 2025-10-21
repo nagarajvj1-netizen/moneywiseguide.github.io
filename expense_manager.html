@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager (₹) – MoneyWiseGuide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8">
+    
+    <style>
+        :root {
+            --mwg-color-bg: #FFFFFF;
+            --mwg-color-surface: #F7FAFC;
+            --mwg-color-text: #102A43;
+            --mwg-color-brand: #0B1F3B;
+            --mwg-color-accent: #FF7A21;
+            --mwg-color-muted: #8795A1;
+            --mwg-radius: 12px;
+            --mwg-shadow: 0 6px 18px rgba(16,42,67,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--mwg-color-bg);
+            color: var(--mwg-color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--mwg-color-brand);
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: -0.2px;
+        }
+        
+        .hero-gradient h1 {
+            color: white !important;
+        }
+
+        .mwg-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mwg-card {
+            background: var(--mwg-color-surface);
+            border-radius: var(--mwg-radius);
+            box-shadow: var(--mwg-shadow);
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid #E1E8F0;
+        }
+
+        .mwg-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--mwg-color-brand);
+            color: #fff;
+            border: 0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .mwg-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(11,31,59,.18);
+        }
+
+        .mwg-btn.outline {
+            background: #fff;
+            color: var(--mwg-color-brand);
+            border: 2px solid var(--mwg-color-brand);
+        }
+
+        .mwg-btn.accent {
+            background: var(--mwg-color-accent);
+        }
+
+        .mwg-input, .mwg-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #D9E2EC;
+            background: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .mwg-input:focus, .mwg-select:focus {
+            outline: 2px solid var(--mwg-color-accent);
+            border-color: var(--mwg-color-accent);
+        }
+
+        .mwg-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .mwg-table th, .mwg-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #EEF2F7;
+            text-align: left;
+        }
+
+        .mwg-table th {
+            background: #EFF6FF;
+            color: #334E68;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .mwg-table .text-right {
+            text-align: right;
+        }
+
+        .mwg-table .text-center {
+            text-align: center;
+        }
+
+        .mwg-table tbody tr:nth-child(odd) {
+            background: #FAFBFC;
+        }
+
+        .mwg-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #E1E8F0;
+            box-shadow: 0 2px 10px rgba(16,42,67,.06);
+            font-size: 0.9rem;
+        }
+
+        .mwg-badge img {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+        }
+
+        .mwg-badge .name {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 700;
+            color: var(--mwg-color-brand);
+            letter-spacing: 0.2px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, var(--mwg-color-brand) 0%, #1a365d 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--mwg-radius);
+            text-align: center;
+            box-shadow: var(--mwg-shadow);
+        }
+
+        .result-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--mwg-color-brand);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--mwg-color-muted);
+            margin-top: 0.25rem;
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .mwg-container {
+                padding: 1rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-navy { background-color: var(--mwg-color-brand); }
+        .bg-orange { background-color: var(--mwg-color-accent); }
+        .text-navy { color: var(--mwg-color-brand); }
+        .text-orange { color: var(--mwg-color-accent); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0B1F3B 0%, #1a365d 100%) !important;
+            color: white !important;
+        }
+        
+        .hero-gradient h1,
+        .hero-gradient .brand-font {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+        }
+        
+        .hero-gradient p {
+            color: white !important;
+            opacity: 0.95 !important;
+        }
+        
+        .hero-gradient .text-4xl,
+        .hero-gradient .md\:text-5xl,
+        .hero-gradient .font-bold,
+        .hero-gradient .text-xl {
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--mwg-color-accent);
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 280px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--mwg-color-brand);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 300px;
+            background-color: var(--mwg-color-brand);
+            transition: all 0.3s ease;
+            z-index: 999;
+            padding: 80px 20px 20px;
+        }
+        
+        .mobile-nav.open {
+            right: 0;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            padding: 15px 0;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-nav a:hover {
+            color: var(--mwg-color-accent);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        .footer {
+            background-color: var(--mwg-color-brand);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--mwg-color-accent);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-section a {
+            color: #cbd5e0;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--mwg-color-accent);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #2d3748;
+            padding-top: 20px;
+            text-align: center;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                    <div class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+                    
+                    <!-- Calculators Dropdown -->
+                    <div class="dropdown">
+                        <a href="/calculators" class="nav-link"><i class="fas fa-calculator mr-2"></i>Calculators <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/calculators/sip"><i class="fas fa-chart-line text-orange mr-2"></i>SIP Calculator</a>
+                            <a href="/calculators/lumpsum"><i class="fas fa-coins text-orange mr-2"></i>Lumpsum Calculator</a>
+                            <a href="/calculators/fixed-deposit"><i class="fas fa-university text-orange mr-2"></i>Fixed Deposit Calculator</a>
+                            <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt text-orange mr-2"></i>Recurring Deposit Calculator</a>
+                            <a href="/calculators/mortgage"><i class="fas fa-home text-orange mr-2"></i>Mortgage Calculator</a>
+                            <a href="/calculators/debt-payoff"><i class="fas fa-credit-card text-orange mr-2"></i>Debt Payoff Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Dropdown -->
+                    <div class="dropdown">
+                        <a href="/tools" class="nav-link"><i class="fas fa-tools mr-2"></i>Tools <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/tools/budget-tracker"><i class="fas fa-chart-pie text-orange mr-2"></i>Budget Tracker</a>
+                            <a href="/tools/expense-manager"><i class="fas fa-shopping-cart text-orange mr-2"></i>Expense Manager</a>
+                            <a href="/tools/emergency-fund"><i class="fas fa-shield-alt text-orange mr-2"></i>Emergency Fund Calculator</a>
+                            <a href="/tools/retirement-planner"><i class="fas fa-umbrella-beach text-orange mr-2"></i>Retirement Planner</a>
+                            <a href="/tools/goals-planner"><i class="fas fa-target text-orange mr-2"></i>Goals Planner</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/blog" class="nav-link"><i class="fas fa-blog mr-2"></i>Blog</a>
+                    <a href="/contact" class="nav-link"><i class="fas fa-envelope mr-2"></i>Contact</a>
+                </nav>
+                
+                <!-- Mobile menu button -->
+                <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/"><i class="fas fa-home mr-2"></i>Home</a>
+        <a href="/calculators/sip"><i class="fas fa-chart-line mr-2"></i>SIP Calculator</a>
+        <a href="/calculators/lumpsum"><i class="fas fa-coins mr-2"></i>Lumpsum Calculator</a>
+        <a href="/calculators/fixed-deposit"><i class="fas fa-university mr-2"></i>Fixed Deposit Calculator</a>
+        <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt mr-2"></i>Recurring Deposit Calculator</a>
+        <a href="/calculators/mortgage"><i class="fas fa-home mr-2"></i>Mortgage Calculator</a>
+        <a href="/calculators/debt-payoff"><i class="fas fa-credit-card mr-2"></i>Debt Payoff Calculator</a>
+        <a href="/tools/budget-tracker"><i class="fas fa-chart-pie mr-2"></i>Budget Tracker</a>
+        <a href="/tools/expense-manager"><i class="fas fa-shopping-cart mr-2"></i>Expense Manager</a>
+        <a href="/tools/emergency-fund"><i class="fas fa-shield-alt mr-2"></i>Emergency Fund Calculator</a>
+        <a href="/tools/goals-planner"><i class="fas fa-target mr-2"></i>Goals Planner</a>
+        <a href="/blog"><i class="fas fa-blog mr-2"></i>Blog</a>
+        <a href="/contact"><i class="fas fa-envelope mr-2"></i>Contact</a>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="hero-gradient rounded-2xl p-8 mb-8 text-white">
+            <div class="text-center">
+                <h1 class="brand-font text-4xl md:text-5xl font-bold mb-4">Expense Manager</h1>
+                <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                    Track and manage your expenses efficiently with comprehensive categories. Add expenses, categorize them, and get detailed insights with professional reports.
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="mwg-container">
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Add Expense Form -->
+                <div class="lg:col-span-1">
+                    <div class="mwg-card">
+                        <h3><i class="fas fa-plus-circle mr-2"></i>Add Expense</h3>
+                        
+                        <form id="expenseForm">
+                            <div class="input-group">
+                                <label for="expenseDate">Date</label>
+                                <input type="date" id="expenseDate" class="mwg-input" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="expenseDescription">Description</label>
+                                <input type="text" id="expenseDescription" class="mwg-input" placeholder="Enter expense description" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="expenseAmount">Amount (₹)</label>
+                                <input type="number" id="expenseAmount" class="mwg-input" placeholder="0" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="expenseCategory">Category</label>
+                                <select id="expenseCategory" class="mwg-select" required>
+                                    <option value="">Select Category</option>
+                                </select>
+                                <div class="help-text" id="categoryHelp"></div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="expenseType">Type</label>
+                                <select id="expenseType" class="mwg-select" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Fixed">Fixed</option>
+                                    <option value="Variable">Variable</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="paymentMethod">Payment Method</label>
+                                <select id="paymentMethod" class="mwg-select">
+                                    <option value="Cash">Cash</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Debit Card">Debit Card</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Digital Wallet">Digital Wallet</option>
+                                    <option value="Net Banking">Net Banking</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="mwg-btn w-full">
+                                <i class="fas fa-plus"></i>
+                                Add Expense
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="results-grid mt-6">
+                        <div class="result-card">
+                            <div class="label">Total Expenses</div>
+                            <div class="value" id="totalExpenses">₹0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="label">This Month</div>
+                            <div class="value" id="monthlyExpenses">₹0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="label">Average Daily</div>
+                            <div class="value" id="dailyAverage">₹0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="label">Total Transactions</div>
+                            <div class="value" id="totalTransactions">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Charts -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mwg-card">
+                            <h3>Expenses by Category</h3>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="mwg-card">
+                            <h3>Fixed vs Variable</h3>
+                            <div class="chart-container">
+                                <canvas id="typeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Bar Chart -->
+                    <div class="mwg-card">
+                        <h3>Category Breakdown</h3>
+                        <div class="chart-container">
+                            <canvas id="categoryBarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Trend -->
+                    <div class="mwg-card">
+                        <h3>Monthly Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Chart -->
+                    <div class="mwg-card">
+                        <h3>Payment Methods</h3>
+                        <div class="chart-container">
+                            <canvas id="paymentChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Expense List -->
+                    <div class="mwg-card">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3>Recent Expenses</h3>
+                            <div class="actions-row" style="margin: 0;">
+                                <button class="mwg-btn" onclick="exportCSV()">
+                                    <i class="fas fa-download"></i>
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="mwg-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Payment</th>
+                                        <th class="text-right">Amount</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expenseList">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-8 text-gray-500">No expenses added yet</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-8 w-8">
+                        <div class="brand-font text-xl font-bold text-white">MoneyWiseGuide</div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Your trusted companion for financial planning and wealth management. Make informed decisions with our comprehensive suite of calculators and tools.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Calculators</h3>
+                    <a href="/calculators/sip">SIP Calculator</a>
+                    <a href="/calculators/lumpsum">Lumpsum Calculator</a>
+                    <a href="/calculators/fixed-deposit">Fixed Deposit Calculator</a>
+                    <a href="/calculators/recurring-deposit">Recurring Deposit Calculator</a>
+                    <a href="/calculators/mortgage">Mortgage Calculator</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <a href="/tools/budget-tracker">Budget Tracker</a>
+                    <a href="/tools/expense-manager">Expense Manager</a>
+                    <a href="/tools/emergency-fund">Emergency Fund Calculator</a>
+                    <a href="/tools/retirement-planner">Retirement Planner</a>
+                    <a href="/tools/goals-planner">Goals Planner</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="/blog">Blog & Articles</a>
+                    <a href="/guides">Financial Guides</a>
+                    <a href="/contact">Contact Us</a>
+                    <a href="/about">About MoneyWiseGuide</a>
+                    <a href="/privacy">Privacy Policy</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MoneyWiseGuide. All rights reserved. | Making financial planning accessible to everyone.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('open');
+        }
+
+        // Expense categories from Emergency Fund Calculator
+        const expenseCategories = [
+            { id: 'housing', label: 'Housing', icon: '🏠', color: '#0B1F3B', help: 'Rent/EMI, property tax, maintenance' },
+            { id: 'utilities', label: 'Utilities', icon: '💡', color: '#FF7A21', help: 'Electricity, water, gas, internet' },
+            { id: 'food', label: 'Food & Groceries', icon: '🍽️', color: '#10B981', help: 'Essential groceries and basic meals' },
+            { id: 'transport', label: 'Transportation', icon: '🚗', color: '#3B82F6', help: 'Fuel, public transport, vehicle maintenance' },
+            { id: 'insurance', label: 'Insurance', icon: '🛡️', color: '#8B5CF6', help: 'Health, life, vehicle insurance premiums' },
+            { id: 'debt', label: 'Debt Payments', icon: '💳', color: '#EF4444', help: 'Minimum payments on loans and credit cards' },
+            { id: 'healthcare', label: 'Healthcare', icon: '🏥', color: '#F59E0B', help: 'Essential medical expenses and medicines' },
+            { id: 'childcare', label: 'Childcare/Education', icon: '👶', color: '#EC4899', help: 'School fees, daycare, essential supplies' },
+            { id: 'entertainment', label: 'Entertainment', icon: '🎬', color: '#06B6D4', help: 'Movies, dining out, recreation' },
+            { id: 'shopping', label: 'Shopping', icon: '🛍️', color: '#84CC16', help: 'Clothing, personal items, non-essentials' },
+            { id: 'savings', label: 'Savings & Investments', icon: '💰', color: '#14B8A6', help: 'Emergency fund, investments, retirement' },
+            { id: 'personal', label: 'Personal Care', icon: '💆', color: '#F97316', help: 'Salon, spa, personal grooming' },
+            { id: 'travel', label: 'Travel', icon: '✈️', color: '#A855F7', help: 'Vacation, business travel, transportation' },
+            { id: 'miscellaneous', label: 'Miscellaneous', icon: '📦', color: '#6B7280', help: 'Other expenses not categorized' }
+        ];
+
+        // Data storage
+        let expenses = JSON.parse(localStorage.getItem('mwg_expenses_enhanced') || '[]');
+        let categoryChart, typeChart, categoryBarChart, trendChart, paymentChart;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('expenseDate').valueAsDate = new Date();
+            initializeCategoryDropdown();
+            renderExpenses();
+            updateSummary();
+            initCharts();
+            updateCharts();
+        });
+
+        // Initialize category dropdown
+        function initializeCategoryDropdown() {
+            const select = document.getElementById('expenseCategory');
+            select.innerHTML = '<option value="">Select Category</option>';
+            
+            expenseCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = `${category.icon} ${category.label}`;
+                select.appendChild(option);
+            });
+
+            // Add change event to show help text
+            select.addEventListener('change', function() {
+                const categoryId = this.value;
+                const category = expenseCategories.find(c => c.id === categoryId);
+                const helpDiv = document.getElementById('categoryHelp');
+                helpDiv.textContent = category ? category.help : '';
+            });
+        }
+
+        // Sanitize function to remove stray characters
+        function sanitize(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/\u00B9/g, '');
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Add expense
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const expense = {
+                id: Date.now(),
+                date: document.getElementById('expenseDate').value,
+                description: sanitize(document.getElementById('expenseDescription').value),
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                categoryId: document.getElementById('expenseCategory').value,
+                type: document.getElementById('expenseType').value,
+                paymentMethod: document.getElementById('paymentMethod').value
+            };
+
+            expenses.unshift(expense);
+            localStorage.setItem('mwg_expenses_enhanced', JSON.stringify(expenses));
+            
+            renderExpenses();
+            updateSummary();
+            updateCharts();
+            
+            this.reset();
+            document.getElementById('expenseDate').valueAsDate = new Date();
+            document.getElementById('categoryHelp').textContent = '';
+        });
+
+        // Render expenses
+        function renderExpenses() {
+            const tbody = document.getElementById('expenseList');
+            
+            if (expenses.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-500">No expenses added yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = expenses.map(expense => {
+                const category = expenseCategories.find(c => c.id === expense.categoryId);
+                const categoryName = category ? category.label : 'Unknown';
+                const categoryIcon = category ? category.icon : '📦';
+
+                return `
+                <tr>
+                    <td>${new Date(expense.date).toLocaleDateString('en-IN')}</td>
+                    <td>${sanitize(expense.description)}</td>
+                    <td><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">${categoryIcon} ${categoryName}</span></td>
+                    <td><span class="px-2 py-1 ${expense.type === 'Fixed' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} rounded-full text-xs">${expense.type}</span></td>
+                    <td><span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">${expense.paymentMethod}</span></td>
+                    <td class="text-right font-medium">${formatCurrency(expense.amount)}</td>
+                    <td class="text-center">
+                        <button onclick="deleteExpense(${expense.id})" class="mwg-btn" style="background: #EF4444; padding: 0.5rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        // Delete expense
+        function deleteExpense(id) {
+            if (confirm('Are you sure you want to delete this expense?')) {
+                expenses = expenses.filter(e => e.id !== id);
+                localStorage.setItem('mwg_expenses_enhanced', JSON.stringify(expenses));
+                renderExpenses();
+                updateSummary();
+                updateCharts();
+            }
+        }
+
+        // Update summary
+        function updateSummary() {
+            const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+            const thisMonth = expenses.filter(exp => {
+                const expDate = new Date(exp.date);
+                const now = new Date();
+                return expDate.getMonth() === now.getMonth() && expDate.getFullYear() === now.getFullYear();
+            }).reduce((sum, exp) => sum + exp.amount, 0);
+            
+            const daysInMonth = new Date().getDate();
+            const dailyAvg = thisMonth / daysInMonth;
+
+            document.getElementById('totalExpenses').textContent = formatCurrency(total);
+            document.getElementById('monthlyExpenses').textContent = formatCurrency(thisMonth);
+            document.getElementById('dailyAverage').textContent = formatCurrency(dailyAvg);
+            document.getElementById('totalTransactions').textContent = expenses.length.toString();
+        }
+
+        // Initialize charts
+        function initCharts() {
+            Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+            Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            const ctx2 = document.getElementById('typeChart').getContext('2d');
+            typeChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            const ctx3 = document.getElementById('categoryBarChart').getContext('2d');
+            categoryBarChart = new Chart(ctx3, {
+                type: 'bar',
+                data: { labels: [], datasets: [] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const ctx4 = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(ctx4, {
+                type: 'line',
+                data: { labels: [], datasets: [] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const ctx5 = document.getElementById('paymentChart').getContext('2d');
+            paymentChart = new Chart(ctx5, {
+                type: 'pie',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        // Update charts
+        function updateCharts() {
+            // Category chart
+            const categoryData = {};
+            expenses.forEach(exp => {
+                const category = expenseCategories.find(c => c.id === exp.categoryId);
+                const categoryName = category ? category.label : 'Unknown';
+                categoryData[categoryName] = (categoryData[categoryName] || 0) + exp.amount;
+            });
+
+            const categoryLabels = Object.keys(categoryData);
+            const categoryValues = Object.values(categoryData);
+            const categoryColors = categoryLabels.map(label => {
+                const category = expenseCategories.find(c => c.label === label);
+                return category ? category.color : '#6B7280';
+            });
+            
+            categoryChart.data.labels = categoryLabels;
+            categoryChart.data.datasets[0].data = categoryValues;
+            categoryChart.data.datasets[0].backgroundColor = categoryColors;
+            categoryChart.update();
+
+            // Type chart
+            const typeData = {};
+            expenses.forEach(exp => {
+                typeData[exp.type] = (typeData[exp.type] || 0) + exp.amount;
+            });
+
+            typeChart.data.labels = Object.keys(typeData);
+            typeChart.data.datasets[0].data = Object.values(typeData);
+            typeChart.data.datasets[0].backgroundColor = ['#EF4444', '#10B981'];
+            typeChart.update();
+
+            // Category bar chart
+            categoryBarChart.data.labels = categoryLabels;
+            categoryBarChart.data.datasets = [{
+                label: 'Amount Spent',
+                data: categoryValues,
+                backgroundColor: categoryColors,
+                borderRadius: 4
+            }];
+            categoryBarChart.update();
+
+            // Trend chart
+            const monthlyData = {};
+            expenses.forEach(exp => {
+                const month = new Date(exp.date).toISOString().slice(0, 7);
+                monthlyData[month] = (monthlyData[month] || 0) + exp.amount;
+            });
+
+            const sortedMonths = Object.keys(monthlyData).sort();
+            trendChart.data.labels = sortedMonths.map(m => new Date(m + '-01').toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }));
+            trendChart.data.datasets = [{
+                label: 'Monthly Expenses',
+                data: sortedMonths.map(m => monthlyData[m]),
+                borderColor: '#0B1F3B',
+                backgroundColor: '#0B1F3B20',
+                fill: true,
+                tension: 0.3
+            }];
+            trendChart.update();
+
+            // Payment method chart
+            const paymentData = {};
+            expenses.forEach(exp => {
+                paymentData[exp.paymentMethod] = (paymentData[exp.paymentMethod] || 0) + exp.amount;
+            });
+
+            const paymentColors = ['#0B1F3B', '#FF7A21', '#10B981', '#F59E0B', '#8B5CF6', '#06B6D4', '#84CC16'];
+            
+            paymentChart.data.labels = Object.keys(paymentData);
+            paymentChart.data.datasets[0].data = Object.values(paymentData);
+            paymentChart.data.datasets[0].backgroundColor = paymentColors.slice(0, Object.keys(paymentData).length);
+            paymentChart.update();
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const headers = ['Date', 'Description', 'Category', 'Type', 'Payment Method', 'Amount'];
+            const rows = expenses.map(exp => {
+                const category = expenseCategories.find(c => c.id === exp.categoryId);
+                return [
+                    exp.date,
+                    sanitize(exp.description),
+                    category ? category.label : 'Unknown',
+                    exp.type,
+                    exp.paymentMethod,
+                    exp.amount
+                ];
+            });
+
+            let csvContent = 'Site,MoneyWiseGuide\n';
+            csvContent += 'Report,Expense Manager Enhanced\n';
+            csvContent += `GeneratedAt,${new Date().toISOString()}\n\n`;
+            csvContent += headers.join(',') + '\n';
+            csvContent += rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `expense_report_enhanced_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+
+
+    </script>
+</body>
+</html>
