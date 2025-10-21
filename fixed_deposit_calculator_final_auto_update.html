@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyWiseGuide – Fixed Deposit Calculator (₹ INR)</title>
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8">
+    
+    <!-- CDN Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    <style>
+        :root {
+            --navy: #0B1F3B;
+            --orange: #FF7A21;
+            --white: #FFFFFF;
+            --light-gray: #F7FAFC;
+            --green: #10B981;
+            --blue: #3B82F6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--navy);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+        }
+        
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-navy { background-color: var(--navy); }
+        .bg-orange { background-color: var(--orange); }
+        .bg-green { background-color: var(--green); }
+        .bg-blue { background-color: var(--blue); }
+        .text-navy { color: var(--navy); }
+        .text-orange { color: var(--orange); }
+        .text-green { color: var(--green); }
+        .text-blue { color: var(--blue); }
+        .border-orange { border-color: var(--orange); }
+        .border-green { border-color: var(--green); }
+        .border-blue { border-color: var(--blue); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a365d 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: var(--orange);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary {
+            background-color: var(--orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e5651d;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--orange);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--orange);
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--green);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background-color: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-info:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border-radius: 8px;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--navy);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .input-field:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 122, 33, 0.1);
+            outline: none;
+        }
+        
+        .period-input {
+            width: 80px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--navy);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .result-highlight {
+            background: linear-gradient(135deg, var(--orange), #ff8c42);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-green {
+            background: linear-gradient(135deg, var(--green), #10b982);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-blue {
+            background: linear-gradient(135deg, var(--blue), #3b83f6);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .loading {
+            display: none;
+            color: var(--orange);
+        }
+        
+        .deposit-category {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .deposit-category:hover {
+            border-color: var(--orange);
+        }
+        
+        .deposit-category.selected {
+            border-color: var(--orange);
+            background-color: rgba(255, 122, 33, 0.1);
+        }
+        
+        .deposit-category.short-term.selected {
+            border-color: var(--green);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        
+        .deposit-category.long-term.selected {
+            border-color: var(--blue);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .payout-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payout-option:hover {
+            border-color: var(--orange);
+        }
+        
+        .payout-option.selected {
+            border-color: var(--orange);
+            background-color: rgba(255, 122, 33, 0.1);
+        }
+        
+        .payout-results {
+            display: none;
+        }
+        
+        .payout-results.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .period-input {
+                width: 60px;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .mobile-menu-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                    <div class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+                    
+                    <!-- Calculators Dropdown -->
+                    <div class="dropdown">
+                        <a href="/calculators" class="nav-link"><i class="fas fa-calculator mr-2"></i>Calculators <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/calculators/fixed-deposit"><i class="fas fa-university text-orange mr-2"></i>Fixed Deposit Calculator</a>
+                            <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt text-orange mr-2"></i>Recurring Deposit Calculator</a>
+                            <a href="/calculators/savings"><i class="fas fa-piggy-bank text-orange mr-2"></i>Savings Calculator</a>
+                            <a href="/calculators/loan"><i class="fas fa-coins text-orange mr-2"></i>Loan Payment Calculator</a>
+                            <a href="/calculators/investment"><i class="fas fa-chart-line text-orange mr-2"></i>Investment Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Dropdown -->
+                    <div class="dropdown">
+                        <a href="/tools" class="nav-link"><i class="fas fa-tools mr-2"></i>Tools <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/tools/budget-tracker"><i class="fas fa-chart-pie text-orange mr-2"></i>Budget Tracker</a>
+                            <a href="/tools/expense-manager"><i class="fas fa-shopping-cart text-orange mr-2"></i>Expense Manager</a>
+                            <a href="/tools/portfolio-tracker"><i class="fas fa-briefcase text-orange mr-2"></i>Portfolio Tracker</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/blogs" class="nav-link"><i class="fas fa-blog mr-2"></i>Blogs</a>
+                </nav>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <a href="/login" class="btn-secondary text-sm">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </a>
+                    <a href="/register" class="btn-primary text-sm">
+                        <i class="fas fa-user-plus mr-2"></i>Register
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="mobile-menu md:hidden">
+                    <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="text-sm">
+                <a href="/" class="text-orange hover:underline">Home</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <a href="/calculators" class="text-orange hover:underline">Calculators</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <span class="text-gray-700">Fixed Deposit Calculator</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="brand-font text-5xl font-bold text-navy mb-6">Fixed Deposit Calculator</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Calculate your Fixed Deposit returns with different tenure categories and payout options. Get accurate projections with real-time updates.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Calculator Form -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-university text-orange mr-4 text-2xl"></i>
+                    FD Parameters
+                </h2>
+                
+                <form id="fdForm" class="space-y-8">
+                    <!-- Principal Amount -->
+                    <div>
+                        <label for="principalAmount" class="block text-lg font-semibold text-navy mb-3">
+                            Principal Amount (₹)
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">The lump sum amount you want to invest in Fixed Deposit</span>
+                            </span>
+                        </label>
+                        <input type="number" id="principalAmount" name="principalAmount" 
+                               class="input-field text-lg" 
+                               placeholder="Enter principal amount" value="100000" min="1000" step="1000">
+                        <div id="principalAmountError" class="error-message"></div>
+                    </div>
+
+                    <!-- Annual Interest Rate -->
+                    <div>
+                        <label for="annualRate" class="block text-lg font-semibold text-navy mb-3">
+                            Annual Interest Rate (%)
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Fixed Deposit interest rate offered by your bank</span>
+                            </span>
+                        </label>
+                        <input type="number" id="annualRate" name="annualRate" 
+                               class="input-field text-lg" 
+                               placeholder="Enter interest rate" value="7.5" min="0" max="20" step="0.1">
+                        <div id="annualRateError" class="error-message"></div>
+                    </div>
+
+                    <!-- Deposit Category -->
+                    <div>
+                        <label class="block text-lg font-semibold text-navy mb-3">
+                            Deposit Category
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Choose deposit category based on tenure for accurate calculation methodology</span>
+                            </span>
+                        </label>
+                        <div class="space-y-3">
+                            <div class="deposit-category short-term" data-category="short-term">
+                                <div class="flex items-center">
+                                    <input type="radio" id="shortTerm" name="depositCategory" value="short-term" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-green">Short-term FD (≤ 180 days)</h4>
+                                        <p class="text-sm text-gray-600">Simple interest calculation, higher liquidity</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deposit-category selected" data-category="regular">
+                                <div class="flex items-center">
+                                    <input type="radio" id="regular" name="depositCategory" value="regular" checked class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Regular FD (6 months - 10 years)</h4>
+                                        <p class="text-sm text-gray-600">Quarterly compounding, standard rates</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deposit-category long-term" data-category="long-term">
+                                <div class="flex items-center">
+                                    <input type="radio" id="longTerm" name="depositCategory" value="long-term" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-blue">Long-term FD (> 5 years)</h4>
+                                        <p class="text-sm text-gray-600">Best rates, tax-saving options available</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Period -->
+                    <div>
+                        <label class="block text-lg font-semibold text-navy mb-3">
+                            Time Period
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Duration for which you want to invest in Fixed Deposit</span>
+                            </span>
+                        </label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Years</label>
+                                <input type="number" id="years" name="years" 
+                                       class="input-field period-input text-lg" 
+                                       placeholder="0" value="5" min="0" max="20" step="1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Months</label>
+                                <input type="number" id="months" name="months" 
+                                       class="input-field period-input text-lg" 
+                                       placeholder="0" value="0" min="0" max="11" step="1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Days</label>
+                                <input type="number" id="days" name="days" 
+                                       class="input-field period-input text-lg" 
+                                       placeholder="0" value="0" min="0" max="365" step="1">
+                            </div>
+                        </div>
+                        <div id="timePeriodError" class="error-message"></div>
+                    </div>
+
+                    <!-- Interest Payout Option -->
+                    <div id="payoutSection">
+                        <label class="block text-lg font-semibold text-navy mb-3">
+                            Interest Payout Option
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Choose how you want to receive your FD interest</span>
+                            </span>
+                        </label>
+                        <div class="space-y-3">
+                            <div class="payout-option selected" data-payout="cumulative">
+                                <div class="flex items-center">
+                                    <input type="radio" id="cumulative" name="payoutOption" value="cumulative" checked class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Cumulative FD</h4>
+                                        <p class="text-sm text-gray-600">Interest compounds and paid at maturity (Highest Returns)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payout-option" data-payout="quarterly">
+                                <div class="flex items-center">
+                                    <input type="radio" id="quarterly" name="payoutOption" value="quarterly" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Quarterly Interest Payout</h4>
+                                        <p class="text-sm text-gray-600">Interest paid every 3 months (Regular Income)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payout-option" data-payout="monthly">
+                                <div class="flex items-center">
+                                    <input type="radio" id="monthly" name="payoutOption" value="monthly" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Monthly Interest Payout</h4>
+                                        <p class="text-sm text-gray-600">Interest paid every month (Maximum Liquidity)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto-calculation Notice -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                        <i class="fas fa-magic text-blue mr-2"></i>
+                        <span class="text-blue font-semibold">Results update automatically as you change values</span>
+                        <span class="loading ml-3" style="display: none;">
+                            <i class="fas fa-spinner fa-spin text-blue"></i>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-chart-pie text-orange mr-4 text-2xl"></i>
+                    Investment Projection
+                </h2>
+                
+                <div id="results" class="hidden">
+                    <!-- Short-term Results -->
+                    <div id="shortTermResults" class="payout-results">
+                        <div class="space-y-6 mb-8">
+                            <div class="result-highlight-green">
+                                <h3 class="text-2xl font-bold mb-3">Investment Value at Maturity</h3>
+                                <p class="text-4xl font-bold" id="shortTermValue">₹0</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Principal Amount:</span>
+                                    <span class="font-bold text-xl text-navy" id="shortTermPrincipal">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Interest Earned:</span>
+                                    <span class="font-bold text-xl text-green-600" id="shortTermInterest">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Daily Interest Rate:</span>
+                                    <span class="font-bold text-xl text-green" id="shortTermDailyRate">0%</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t pt-4">
+                                    <span class="font-semibold text-lg">Effective Return Rate:</span>
+                                    <span class="font-bold text-xl text-orange" id="shortTermEffectiveRate">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Regular/Long-term Results (Cumulative) -->
+                    <div id="cumulativeResults" class="payout-results active">
+                        <div class="space-y-6 mb-8">
+                            <div class="result-highlight">
+                                <h3 class="text-2xl font-bold mb-3">Investment Value at Maturity</h3>
+                                <p class="text-4xl font-bold" id="cumulativeValue">₹0</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Principal Amount:</span>
+                                    <span class="font-bold text-xl text-navy" id="cumulativePrincipal">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Interest Earned:</span>
+                                    <span class="font-bold text-xl text-green-600" id="cumulativeInterest">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t pt-4">
+                                    <span class="font-semibold text-lg">Effective Return Rate:</span>
+                                    <span class="font-bold text-xl text-orange" id="cumulativeRate">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quarterly Results -->
+                    <div id="quarterlyResults" class="payout-results">
+                        <div class="space-y-6 mb-8">
+                            <div class="result-highlight">
+                                <h3 class="text-2xl font-bold mb-3">Total Returns</h3>
+                                <p class="text-4xl font-bold" id="quarterlyTotal">₹0</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Principal Returned:</span>
+                                    <span class="font-bold text-xl text-navy" id="quarterlyPrincipal">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Total Interest Paid:</span>
+                                    <span class="font-bold text-xl text-green-600" id="quarterlyInterest">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Quarterly Interest:</span>
+                                    <span class="font-bold text-xl text-orange" id="quarterlyAmount">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Results -->
+                    <div id="monthlyResults" class="payout-results">
+                        <div class="space-y-6 mb-8">
+                            <div class="result-highlight">
+                                <h3 class="text-2xl font-bold mb-3">Total Returns</h3>
+                                <p class="text-4xl font-bold" id="monthlyTotal">₹0</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Principal Returned:</span>
+                                    <span class="font-bold text-xl text-navy" id="monthlyPrincipal">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Total Interest Paid:</span>
+                                    <span class="font-bold text-xl text-green-600" id="monthlyInterest">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-lg">Monthly Interest:</span>
+                                    <span class="font-bold text-xl text-orange" id="monthlyAmount">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="chart-container mb-8">
+                        <canvas id="fdChart"></canvas>
+                    </div>
+
+                    <!-- Additional Insights -->
+                    <div class="bg-blue-50 p-6 rounded-lg mb-8">
+                        <h4 class="font-bold text-navy mb-4 text-lg">
+                            <i class="fas fa-lightbulb text-orange mr-2"></i>
+                            Key Insights
+                        </h4>
+                        <ul class="space-y-2" id="insights">
+                            <!-- Dynamic insights will be added here -->
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <div id="noResults" class="text-center py-16 text-gray-500">
+                    <i class="fas fa-university text-8xl mb-6 opacity-50"></i>
+                    <p class="text-xl">Enter your FD details and click calculate to see your investment projection</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Educational Content -->
+        <div class="mt-16 grid md:grid-cols-3 gap-8">
+            <div class="card-hover p-8">
+                <h3 class="brand-font text-2xl font-bold text-navy mb-6">
+                    <i class="fas fa-clock text-green mr-3"></i>
+                    Short-term FD
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i><span>Simple interest calculation</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i><span>Maximum liquidity (≤ 180 days)</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i><span>Lower interest rates</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i><span>Ideal for parking surplus funds</span></li>
+                </ul>
+            </div>
+            
+            <div class="card-hover p-8">
+                <h3 class="brand-font text-2xl font-bold text-navy mb-6">
+                    <i class="fas fa-calendar-week text-orange mr-3"></i>
+                    Regular FD
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start"><i class="fas fa-star text-orange mr-3 mt-1"></i><span>Quarterly compounding</span></li>
+                    <li class="flex items-start"><i class="fas fa-star text-orange mr-3 mt-1"></i><span>6 months to 10 years tenure</span></li>
+                    <li class="flex items-start"><i class="fas fa-star text-orange mr-3 mt-1"></i><span>Multiple payout options</span></li>
+                    <li class="flex items-start"><i class="fas fa-star text-orange mr-3 mt-1"></i><span>Standard market rates</span></li>
+                </ul>
+            </div>
+
+            <div class="card-hover p-8">
+                <h3 class="brand-font text-2xl font-bold text-navy mb-6">
+                    <i class="fas fa-trophy text-blue mr-3"></i>
+                    Long-term FD
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start"><i class="fas fa-lightbulb text-blue-500 mr-3 mt-1"></i><span>Highest interest rates</span></li>
+                    <li class="flex items-start"><i class="fas fa-lightbulb text-blue-500 mr-3 mt-1"></i><span>Tax-saving options (Section 80C)</span></li>
+                    <li class="flex items-start"><i class="fas fa-lightbulb text-blue-500 mr-3 mt-1"></i><span>Best for wealth building</span></li>
+                    <li class="flex items-start"><i class="fas fa-lightbulb text-blue-500 mr-3 mt-1"></i><span>Compound growth advantage</span></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-8 w-8">
+                        <h3 class="brand-font text-xl font-bold">MoneyWiseGuide</h3>
+                    </div>
+                    <p class="text-gray-300">Making financial decisions simpler with smart calculators and tools.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-lg">Calculators</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/calculators/fixed-deposit" class="hover:text-orange">Fixed Deposit Calculator</a></li>
+                        <li><a href="/calculators/recurring-deposit" class="hover:text-orange">Recurring Deposit Calculator</a></li>
+                        <li><a href="/calculators/savings" class="hover:text-orange">Savings Calculator</a></li>
+                        <li><a href="/calculators/loan" class="hover:text-orange">Loan Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-lg">Tools</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/tools/budget-tracker" class="hover:text-orange">Budget Tracker</a></li>
+                        <li><a href="/tools/goal-planner" class="hover:text-orange">Goal Planner</a></li>
+                        <li><a href="/tools/portfolio-tracker" class="hover:text-orange">Portfolio Tracker</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-lg">Contact</h4>
+                    <p class="text-gray-300">Build better financial habits with our comprehensive suite of tools.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-600 mt-8 pt-6 text-center">
+                <p class="text-gray-300">&copy; 2024 MoneyWiseGuide. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let fdChart = null;
+        let currentResults = null;
+        
+        // Currency formatter for Indian Rupees
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        };
+
+        // Handle deposit category selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const depositCategories = document.querySelectorAll('.deposit-category');
+            const categoryRadios = document.querySelectorAll('input[name="depositCategory"]');
+            const payoutSection = document.getElementById('payoutSection');
+            
+            depositCategories.forEach(category => {
+                category.addEventListener('click', function() {
+                    const categoryType = this.dataset.category;
+                    const radio = document.getElementById(categoryType === 'short-term' ? 'shortTerm' : 
+                                                        categoryType === 'long-term' ? 'longTerm' : 'regular');
+                    
+                    // Update selection
+                    depositCategories.forEach(cat => cat.classList.remove('selected'));
+                    this.classList.add('selected');
+                    radio.checked = true;
+                    
+                    // Hide/show payout options for short-term deposits
+                    if (categoryType === 'short-term') {
+                        payoutSection.style.display = 'none';
+                    } else {
+                        payoutSection.style.display = 'block';
+                    }
+                    
+                    // Update results display if already calculated
+                    if (!document.getElementById('results').classList.contains('hidden')) {
+                        showCategoryResults(categoryType);
+                    }
+                    
+                    // Trigger auto-update for new category
+                    debounceAutoUpdate();
+                });
+            });
+
+            const payoutOptions = document.querySelectorAll('.payout-option');
+            const radioButtons = document.querySelectorAll('input[name="payoutOption"]');
+            
+            payoutOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const payoutType = this.dataset.payout;
+                    const radio = document.getElementById(payoutType);
+                    
+                    // Update selection
+                    payoutOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    radio.checked = true;
+                    
+                    // Update results display if already calculated
+                    if (!document.getElementById('results').classList.contains('hidden')) {
+                        showPayoutResults(payoutType);
+                    }
+                    
+                    // Trigger auto-update for new payout option
+                    debounceAutoUpdate();
+                });
+            });
+        });
+
+        // Show specific category results
+        function showCategoryResults(categoryType) {
+            const allResults = document.querySelectorAll('.payout-results');
+            allResults.forEach(result => result.classList.remove('active'));
+            
+            if (categoryType === 'short-term') {
+                document.getElementById('shortTermResults').classList.add('active');
+            } else {
+                const selectedPayout = document.querySelector('input[name="payoutOption"]:checked').value;
+                showPayoutResults(selectedPayout);
+            }
+        }
+
+        // Show specific payout results
+        function showPayoutResults(payoutType) {
+            const allResults = document.querySelectorAll('.payout-results');
+            allResults.forEach(result => result.classList.remove('active'));
+            
+            const targetResult = document.getElementById(payoutType + 'Results');
+            if (targetResult) {
+                targetResult.classList.add('active');
+            }
+        }
+        
+        // Validate form inputs
+        function validateInputs() {
+            let isValid = true;
+            const principalAmount = parseFloat(document.getElementById('principalAmount').value);
+            const annualRate = parseFloat(document.getElementById('annualRate').value);
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const months = parseInt(document.getElementById('months').value) || 0;
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const categoryType = document.querySelector('input[name="depositCategory"]:checked').value;
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(div => div.textContent = '');
+            document.querySelectorAll('.input-field').forEach(input => input.classList.remove('border-red-500'));
+            
+            // Validate principal amount
+            if (isNaN(principalAmount) || principalAmount < 1000) {
+                document.getElementById('principalAmountError').textContent = 'Minimum principal amount is ₹1,000';
+                document.getElementById('principalAmount').classList.add('border-red-500');
+                isValid = false;
+            }
+            
+            // Validate annual rate
+            if (isNaN(annualRate) || annualRate <= 0 || annualRate > 20) {
+                document.getElementById('annualRateError').textContent = 'Please enter a valid interest rate between 0.1% and 20%';
+                document.getElementById('annualRate').classList.add('border-red-500');
+                isValid = false;
+            }
+            
+            // Validate time period based on category
+            const totalDays = (years * 365) + (months * 30) + days;
+            if (categoryType === 'short-term' && totalDays > 180) {
+                document.getElementById('timePeriodError').textContent = 'Short-term FD cannot exceed 180 days';
+                isValid = false;
+            } else if (categoryType === 'short-term' && totalDays < 7) {
+                document.getElementById('timePeriodError').textContent = 'Minimum FD tenure is 7 days';
+                isValid = false;
+            } else if (categoryType !== 'short-term' && totalDays < 180) {
+                document.getElementById('timePeriodError').textContent = 'Regular/Long-term FD minimum tenure is 6 months (180 days)';
+                isValid = false;
+            } else if (years > 20) {
+                document.getElementById('timePeriodError').textContent = 'Maximum FD tenure is 20 years';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Calculate total days from years, months, days
+        function getTotalDays() {
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const months = parseInt(document.getElementById('months').value) || 0;
+            const days = parseInt(document.getElementById('days').value) || 0;
+            
+            return (years * 365) + (months * 30) + days;
+        }
+        
+        // Calculate Fixed Deposit returns with all categories and payout options
+        function calculateFD() {
+            if (!validateInputs()) return;
+            
+            // Show loading
+            document.querySelector('.loading').style.display = 'inline-block';
+            
+            // Get form values
+            const principalAmount = parseFloat(document.getElementById('principalAmount').value);
+            const annualRate = parseFloat(document.getElementById('annualRate').value) / 100;
+            const totalDays = getTotalDays();
+            const timeInYears = totalDays / 365;
+            const categoryType = document.querySelector('input[name="depositCategory"]:checked').value;
+            const selectedPayout = document.querySelector('input[name="payoutOption"]:checked') ? 
+                                 document.querySelector('input[name="payoutOption"]:checked').value : 'cumulative';
+            
+            // Calculate based on category
+            let results;
+            if (categoryType === 'short-term') {
+                results = calculateShortTermFD(principalAmount, annualRate, totalDays);
+            } else {
+                results = calculateAllPayoutOptions(principalAmount, annualRate, timeInYears, totalDays);
+            }
+            
+            // Store results globally for export
+            currentResults = {
+                ...results,
+                inputs: {
+                    principalAmount,
+                    annualRate: annualRate * 100,
+                    totalDays,
+                    timeInYears,
+                    categoryType,
+                    selectedPayout
+                }
+            };
+            
+            // Update results
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+                
+                if (categoryType === 'short-term') {
+                    updateShortTermResults(results, principalAmount);
+                    createChart({ principal: principalAmount, interest: results.totalInterest }, 'short-term');
+                    generateShortTermInsights(results, totalDays);
+                    showCategoryResults('short-term');
+                } else {
+                    updateAllResults(results, principalAmount);
+                    createChart(results, selectedPayout);
+                    generateInsights(results, selectedPayout, timeInYears);
+                    showPayoutResults(selectedPayout);
+                }
+                
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('noResults').classList.add('hidden');
+            }, 800);
+        }
+        
+        // Calculate short-term FD (simple interest)
+        function calculateShortTermFD(principal, annualRate, totalDays) {
+            // Simple interest calculation: SI = P * R * T / 100
+            // Where T is in years (days/365)
+            const timeInYears = totalDays / 365;
+            const simpleInterest = principal * annualRate * timeInYears;
+            const maturityValue = principal + simpleInterest;
+            const dailyRate = (annualRate / 365) * 100;
+            const effectiveRate = (simpleInterest / principal) * 100;
+            
+            return {
+                maturityValue,
+                totalInterest: simpleInterest,
+                dailyRate,
+                effectiveRate
+            };
+        }
+        
+        // Calculate returns for all payout options (regular/long-term)
+        function calculateAllPayoutOptions(principal, annualRate, timeInYears, totalDays) {
+            const results = {};
+            
+            // 1. Cumulative FD (Quarterly Compounding)
+            const quarterlyRate = annualRate / 4;
+            const quarters = timeInYears * 4;
+            results.cumulative = {
+                maturityValue: principal * Math.pow(1 + quarterlyRate, quarters),
+                totalInterest: 0,
+                effectiveRate: 0
+            };
+            results.cumulative.totalInterest = results.cumulative.maturityValue - principal;
+            results.cumulative.effectiveRate = ((results.cumulative.maturityValue / principal) ** (1 / timeInYears) - 1) * 100;
+            
+            // 2. Quarterly Interest Payout (Simple Interest)
+            const quarterlyInterest = (principal * annualRate) / 4;
+            const totalQuarters = Math.floor(totalDays / 91.25); // Approximate quarters
+            results.quarterly = {
+                quarterlyAmount: quarterlyInterest,
+                totalInterest: quarterlyInterest * totalQuarters,
+                totalReturns: 0,
+                effectiveRate: annualRate * 100
+            };
+            results.quarterly.totalReturns = principal + results.quarterly.totalInterest;
+            
+            // 3. Monthly Interest Payout (Simple Interest)
+            const monthlyInterest = (principal * annualRate) / 12;
+            const totalMonths = Math.floor(totalDays / 30.44); // Approximate months
+            results.monthly = {
+                monthlyAmount: monthlyInterest,
+                totalInterest: monthlyInterest * totalMonths,
+                totalReturns: 0,
+                effectiveRate: annualRate * 100
+            };
+            results.monthly.totalReturns = principal + results.monthly.totalInterest;
+            
+            return results;
+        }
+        
+        // Update short-term results display
+        function updateShortTermResults(results, principal) {
+            document.getElementById('shortTermValue').textContent = formatCurrency(results.maturityValue);
+            document.getElementById('shortTermPrincipal').textContent = formatCurrency(principal);
+            document.getElementById('shortTermInterest').textContent = formatCurrency(results.totalInterest);
+            document.getElementById('shortTermDailyRate').textContent = results.dailyRate.toFixed(4) + '%';
+            document.getElementById('shortTermEffectiveRate').textContent = results.effectiveRate.toFixed(2) + '%';
+        }
+        
+        // Update all result displays
+        function updateAllResults(results, principal) {
+            // Cumulative results
+            document.getElementById('cumulativeValue').textContent = formatCurrency(results.cumulative.maturityValue);
+            document.getElementById('cumulativePrincipal').textContent = formatCurrency(principal);
+            document.getElementById('cumulativeInterest').textContent = formatCurrency(results.cumulative.totalInterest);
+            document.getElementById('cumulativeRate').textContent = results.cumulative.effectiveRate.toFixed(2) + '%';
+            
+            // Quarterly results
+            document.getElementById('quarterlyTotal').textContent = formatCurrency(results.quarterly.totalReturns);
+            document.getElementById('quarterlyPrincipal').textContent = formatCurrency(principal);
+            document.getElementById('quarterlyInterest').textContent = formatCurrency(results.quarterly.totalInterest);
+            document.getElementById('quarterlyAmount').textContent = formatCurrency(results.quarterly.quarterlyAmount);
+            
+            // Monthly results
+            document.getElementById('monthlyTotal').textContent = formatCurrency(results.monthly.totalReturns);
+            document.getElementById('monthlyPrincipal').textContent = formatCurrency(principal);
+            document.getElementById('monthlyInterest').textContent = formatCurrency(results.monthly.totalInterest);
+            document.getElementById('monthlyAmount').textContent = formatCurrency(results.monthly.monthlyAmount);
+        }
+        
+        // Create chart based on selected option
+        function createChart(results, selectedOption) {
+            const ctx = document.getElementById('fdChart').getContext('2d');
+            
+            if (fdChart) {
+                fdChart.destroy();
+            }
+            
+            let chartData, chartTitle;
+            const principal = parseFloat(document.getElementById('principalAmount').value);
+            
+            if (selectedOption === 'short-term') {
+                chartData = [principal, results.interest];
+                chartTitle = 'Short-term FD Breakdown';
+            } else {
+                switch(selectedOption) {
+                    case 'cumulative':
+                        chartData = [principal, results.cumulative.totalInterest];
+                        chartTitle = 'Cumulative FD Breakdown';
+                        break;
+                    case 'quarterly':
+                        chartData = [principal, results.quarterly.totalInterest];
+                        chartTitle = 'Quarterly Payout FD Breakdown';
+                        break;
+                    case 'monthly':
+                        chartData = [principal, results.monthly.totalInterest];
+                        chartTitle = 'Monthly Payout FD Breakdown';
+                        break;
+                }
+            }
+            
+            fdChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Principal Amount', 'Interest Earned'],
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: ['#0B1F3B', '#FF7A21'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: chartTitle,
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 25,
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = formatCurrency(context.parsed);
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Generate insights for short-term deposits
+        function generateShortTermInsights(results, totalDays) {
+            const insights = [];
+            const principal = parseFloat(document.getElementById('principalAmount').value);
+            
+            insights.push('💡 Short-term FD uses simple interest calculation (no compounding)');
+            insights.push(`⏰ Your investment period: ${totalDays} days`);
+            insights.push(`📈 Daily interest earning: ${formatCurrency(results.totalInterest / totalDays)}`);
+            
+            if (totalDays <= 30) {
+                insights.push('🔥 Ultra-short tenure - excellent for parking surplus funds');
+            } else if (totalDays <= 90) {
+                insights.push('⚡ Short tenure provides high liquidity with guaranteed returns');
+            } else {
+                insights.push('💼 Good balance of liquidity and returns for 3-6 month goals');
+            }
+            
+            insights.push(`🎯 Total return rate: ${results.effectiveRate.toFixed(2)}%`);
+            insights.push('✅ Zero market risk - principal and interest guaranteed');
+            
+            const insightsList = document.getElementById('insights');
+            insightsList.innerHTML = insights.map(insight => `<li class="text-base">${insight}</li>`).join('');
+        }
+        
+        // Generate insights based on calculations
+        function generateInsights(results, selectedPayout, timeInYears) {
+            const insights = [];
+            const principal = parseFloat(document.getElementById('principalAmount').value);
+            
+            // Compare options
+            const cumulativeReturn = results.cumulative.maturityValue;
+            const quarterlyReturn = results.quarterly.totalReturns;
+            const monthlyReturn = results.monthly.totalReturns;
+            
+            const maxReturn = Math.max(cumulativeReturn, quarterlyReturn, monthlyReturn);
+            const selectedReturn = results[selectedPayout === 'cumulative' ? 'cumulative' : 
+                                           selectedPayout === 'quarterly' ? 'quarterly' : 'monthly'];
+            
+            if (selectedPayout === 'cumulative') {
+                insights.push('🎉 Cumulative FD provides the highest returns due to quarterly compounding');
+                insights.push(`💰 You earn ₹${formatCurrency(cumulativeReturn - quarterlyReturn).replace('₹', '')} more than quarterly payout`);
+            } else if (selectedPayout === 'quarterly') {
+                insights.push('📅 Quarterly payout provides regular income every 3 months');
+                insights.push(`💸 You receive ₹${formatCurrency(results.quarterly.quarterlyAmount).replace('₹', '')} every quarter`);
+            } else {
+                insights.push('💳 Monthly payout provides maximum liquidity for regular expenses');
+                insights.push(`💸 You receive ₹${formatCurrency(results.monthly.monthlyAmount).replace('₹', '')} every month`);
+            }
+            
+            if (timeInYears >= 5) {
+                insights.push('⏰ Long-term FD tenure maximizes the benefits of your chosen payout option');
+            }
+            
+            const effectiveRate = selectedPayout === 'cumulative' ? results.cumulative.effectiveRate : 
+                                 selectedPayout === 'quarterly' ? results.quarterly.effectiveRate : 
+                                 results.monthly.effectiveRate;
+            
+            insights.push(`📈 Your effective annual return rate: ${effectiveRate.toFixed(2)}%`);
+            insights.push(`🎯 Total investment period: ${Math.floor(timeInYears)} years ${Math.floor((timeInYears % 1) * 12)} months`);
+            
+            const insightsList = document.getElementById('insights');
+            insightsList.innerHTML = insights.map(insight => `<li class="text-base">${insight}</li>`).join('');
+        }
+
+
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu-content');
+            if (menu) {
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        // Auto-update functionality with debouncing
+        let autoUpdateTimeout;
+        
+        function debounceAutoUpdate() {
+            clearTimeout(autoUpdateTimeout);
+            document.querySelector('.loading').style.display = 'inline-block';
+            
+            autoUpdateTimeout = setTimeout(() => {
+                if (validateInputsQuietly()) {
+                    calculateFD();
+                } else {
+                    document.querySelector('.loading').style.display = 'none';
+                }
+            }, 500); // 500ms delay
+        }
+        
+        // Quiet validation without showing errors
+        function validateInputsQuietly() {
+            const principalAmount = parseFloat(document.getElementById('principalAmount').value);
+            const annualRate = parseFloat(document.getElementById('annualRate').value);
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const months = parseInt(document.getElementById('months').value) || 0;
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const categoryType = document.querySelector('input[name="depositCategory"]:checked').value;
+            
+            // Basic validation - must have valid numbers
+            if (isNaN(principalAmount) || principalAmount < 1000) return false;
+            if (isNaN(annualRate) || annualRate <= 0 || annualRate > 20) return false;
+            
+            const totalDays = (years * 365) + (months * 30) + days;
+            if (categoryType === 'short-term' && (totalDays > 180 || totalDays < 7)) return false;
+            if (categoryType !== 'short-term' && totalDays < 180) return false;
+            if (years > 20) return false;
+            
+            return true;
+        }
+        
+        // Real-time input monitoring and auto-update
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            
+            // Add input listeners for auto-update
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('border-red-500');
+                    const errorDiv = document.getElementById(this.id + 'Error');
+                    if (errorDiv) errorDiv.textContent = '';
+                    
+                    // Trigger auto-update
+                    debounceAutoUpdate();
+                });
+            });
+            
+            // Add change listeners for radio buttons
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    debounceAutoUpdate();
+                });
+            });
+            
+            // Initial calculation with default values
+            setTimeout(() => {
+                if (validateInputsQuietly()) {
+                    calculateFD();
+                }
+            }, 100);
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                calculateFD();
+
+            }
+        });
+    </script>
+</body>
+</html>

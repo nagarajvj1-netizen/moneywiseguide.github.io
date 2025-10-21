@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyWiseGuide – Advanced Debt Payoff Calculator (₹ INR)</title>
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8">
+    
+    <!-- CDN Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    <style>
+        :root {
+            --navy: #0B1F3B;
+            --orange: #FF7A21;
+            --white: #FFFFFF;
+            --light-gray: #F7FAFC;
+            --green: #10B981;
+            --blue: #3B82F6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--navy);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+        }
+        
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-navy { background-color: var(--navy); }
+        .bg-orange { background-color: var(--orange); }
+        .bg-green { background-color: var(--green); }
+        .bg-blue { background-color: var(--blue); }
+        .text-navy { color: var(--navy); }
+        .text-orange { color: var(--orange); }
+        .text-green { color: var(--green); }
+        .text-blue { color: var(--blue); }
+        .border-orange { border-color: var(--orange); }
+        .border-green { border-color: var(--green); }
+        .border-blue { border-color: var(--blue); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a365d 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: var(--orange);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary {
+            background-color: var(--orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e5651d;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--orange);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--orange);
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--green);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background-color: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-info:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--navy);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Enhanced input field styling with maximum width visibility and overflow protection */
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 18px 20px; /* Optimized padding for width visibility */
+            width: 100%;
+            min-width: 180px; /* Ensure minimum width for number visibility */
+            font-size: 16px; /* Optimized font size for width */
+            font-weight: 600; /* Bold font for better visibility */
+            min-height: 56px; /* Balanced height */
+            box-sizing: border-box;
+            text-align: left;
+            letter-spacing: 0.3px; /* Optimized character spacing */
+            overflow: visible; /* Ensure no text cutoff */
+            white-space: nowrap;
+        }
+        
+        .input-field:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 4px rgba(255, 122, 33, 0.15);
+            outline: none;
+            background-color: #fffbf5;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 240px;
+            background-color: var(--navy);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -120px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .result-highlight {
+            background: linear-gradient(135deg, var(--orange), #ff8c42);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-green {
+            background: linear-gradient(135deg, var(--green), #10b982);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-blue {
+            background: linear-gradient(135deg, var(--blue), #3b83f6);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .loading {
+            display: none;
+            color: var(--orange);
+        }
+
+        /* Responsive debt input grid with vertical stacking when needed */
+        .debt-input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            align-items: end;
+            margin-bottom: 24px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            overflow: visible;
+        }
+
+        .debt-input-header {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 0 24px;
+            overflow: visible;
+        }
+
+        .debt-input-header label {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        
+        /* Professional compact debt input styling */
+        .professional-debt-input {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            border: 2px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+        
+        .debt-input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            align-items: end;
+        }
+        
+        .debt-input-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .compact-label {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .compact-input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            width: 100%;
+            min-width: 160px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 44px;
+            box-sizing: border-box;
+            text-align: left;
+            overflow: visible;
+            white-space: nowrap;
+        }
+        
+        .compact-input-field:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 122, 33, 0.15);
+            outline: none;
+            background-color: #fffbf5;
+        }
+        
+        /* Comparison section styling */
+        .comparison-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 2px solid #e2e8f0;
+            margin: 24px 0;
+        }
+        
+        .comparison-card {
+            background: #fafbfc;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .comparison-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-gray {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        
+        .badge-green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .comparison-stats {
+            space-y: 12px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .savings-summary {
+            margin-top: 20px;
+        }
+        
+        .savings-highlight {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #16a34a;
+        }
+
+        .btn-small {
+            padding: 12px 20px;
+            font-size: 16px;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 700;
+            min-height: 52px;
+        }
+
+        .btn-small:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-small.btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-small.btn-danger:hover {
+            background: #c82333;
+        }
+
+        .debt-strategy {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .debt-strategy:hover {
+            border-color: var(--orange);
+        }
+        
+        .debt-strategy.selected {
+            border-color: var(--orange);
+            background-color: rgba(255, 122, 33, 0.1);
+        }
+        
+        .debt-strategy.snowball.selected {
+            border-color: var(--green);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        
+        .debt-strategy.avalanche.selected {
+            border-color: var(--blue);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Enhanced multiple extra payment strategies */
+        .extra-payment-strategies {
+            background: #f0f9ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .extra-payment-strategy {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .extra-payment-strategy.active {
+            border-color: var(--blue);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .strategy-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .strategy-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .extra-payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+            overflow: visible;
+        }
+
+        /* Professional table styling with horizontal scroll for overflow */
+        .results-table-container {
+            width: 100%;
+            margin: 24px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: white;
+            overflow-x: auto;
+            overflow-y: visible;
+        }
+
+        .results-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background: white;
+            font-size: 14px;
+            table-layout: auto;
+        }
+
+        .results-table th {
+            background: var(--navy);
+            color: white;
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+            font-size: 13px;
+            min-width: 120px;
+        }
+
+        .results-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .results-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .results-table tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+
+        .results-table tr:nth-child(even):hover {
+            background-color: #f0f2f5;
+        }
+
+        /* Debt-specific table columns with individual debt tracking */
+        .debt-table th:nth-child(1) { width: 6%; }  /* Month */
+        .debt-table th:nth-child(2) { width: 12%; } /* Total Payment */
+        .debt-table th:nth-child(3) { width: 10%; } /* Interest */
+        .debt-table th:nth-child(4) { width: 10%; } /* Principal */
+        .debt-table th:nth-child(5) { width: 12%; } /* Remaining */
+        .debt-table th:nth-child(6) { width: 50%; } /* Individual Debts Detail */
+
+        .debt-detail-cell {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .debt-item-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .debt-item-detail:last-child {
+            border-bottom: none;
+        }
+
+        .debt-name {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .debt-balance {
+            font-weight: 500;
+            color: var(--orange);
+        }
+
+        .debt-paid-off {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        /* Professional linear debt list styling */
+        .debt-list {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .debt-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--navy);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .debt-list-header span:last-child {
+            width: 40px;
+            text-align: center;
+        }
+
+        .debt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .debt-item:hover {
+            background: #f8f9fa;
+        }
+
+        .debt-item:last-child {
+            border-bottom: none;
+        }
+        
+        .debt-item-field {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .debt-item-action {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .btn-remove {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-remove:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .payoff-order {
+            background: var(--orange);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .pagination-btn {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #1a365d;
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Assumptions and concepts section */
+        .assumptions-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+
+        .concept-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            border-left: 4px solid var(--orange);
+        }
+
+        .concept-title {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .concept-description {
+            color: #6c757d;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 1400px) {
+            .debt-input-grid,
+            .debt-input-header {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 18px;
+            }
+            
+            .debt-item,
+            .debt-item-header {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 16px;
+            }
+
+            .extra-payment-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+
+            .input-field {
+                min-width: 160px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+
+            .debt-input-grid,
+            .debt-input-header,
+            .debt-item,
+            .debt-item-header,
+            .extra-payment-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .input-field {
+                font-size: 16px;
+                padding: 16px 18px;
+                min-height: 56px;
+                min-width: 140px;
+            }
+            
+            .results-table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .results-table {
+                min-width: 600px;
+            }
+            
+            .professional-debt-input .debt-input-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .compact-input-field {
+                min-width: 140px;
+                font-size: 14px;
+                padding: 12px 14px;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .mobile-menu-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                    <div class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+                    
+                    <!-- Calculators Dropdown -->
+                    <div class="dropdown">
+                        <a href="/calculators" class="nav-link"><i class="fas fa-calculator mr-2"></i>Calculators <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/calculators/fixed-deposit"><i class="fas fa-university text-orange mr-2"></i>Fixed Deposit Calculator</a>
+                            <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt text-orange mr-2"></i>Recurring Deposit Calculator</a>
+                            <a href="/calculators/retirement"><i class="fas fa-umbrella-beach text-orange mr-2"></i>Retirement Calculator</a>
+                            <a href="/calculators/debt-payoff"><i class="fas fa-credit-card text-orange mr-2"></i>Debt Payoff Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Dropdown -->
+                    <div class="dropdown">
+                        <a href="/tools" class="nav-link"><i class="fas fa-tools mr-2"></i>Tools <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/tools/budget-tracker"><i class="fas fa-chart-pie text-orange mr-2"></i>Budget Tracker</a>
+                            <a href="/tools/expense-manager"><i class="fas fa-shopping-cart text-orange mr-2"></i>Expense Manager</a>
+                            <a href="/tools/portfolio-tracker"><i class="fas fa-briefcase text-orange mr-2"></i>Portfolio Tracker</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/blogs" class="nav-link"><i class="fas fa-blog mr-2"></i>Blogs</a>
+                </nav>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <a href="/login" class="btn-secondary text-sm">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </a>
+                    <a href="/register" class="btn-primary text-sm">
+                        <i class="fas fa-user-plus mr-2"></i>Register
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="mobile-menu md:hidden">
+                    <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="text-sm">
+                <a href="/" class="text-orange hover:underline">Home</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <a href="/calculators" class="text-orange hover:underline">Calculators</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <span class="text-gray-700">Debt Payoff Calculator</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="brand-font text-5xl font-bold text-navy mb-6">Debt Payoff Calculator</h1>
+            <p class="text-xl text-gray-600 max-w-4xl mx-auto">Plan your debt elimination with multiple extra payment strategies, detailed month-wise projections with individual debt tracking, and comprehensive analysis of Snowball vs Avalanche methods.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Calculator Form -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-credit-card text-orange mr-4 text-2xl"></i>
+                    Debt Information
+                </h2>
+                
+                <form id="debtForm" class="space-y-8">
+                    <!-- Debt Strategy Selection -->
+                    <div>
+                        <label class="block text-lg font-semibold text-navy mb-4">
+                            Payoff Strategy
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Choose your debt payoff approach for optimal results</span>
+                            </span>
+                        </label>
+                        <div class="space-y-3">
+                            <div class="debt-strategy selected snowball" data-strategy="snowball">
+                                <div class="flex items-center">
+                                    <input type="radio" id="snowballStrategy" name="debtStrategy" value="snowball" checked class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-green">Debt Snowball</h4>
+                                        <p class="text-sm text-gray-600">Pay minimum on all debts, extra on smallest balance first</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="debt-strategy" data-strategy="avalanche">
+                                <div class="flex items-center">
+                                    <input type="radio" id="avalancheStrategy" name="debtStrategy" value="avalanche" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-blue">Debt Avalanche</h4>
+                                        <p class="text-sm text-gray-600">Pay minimum on all debts, extra on highest interest rate first</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Debt Input Section with Maximum Spacing -->
+                    <div>
+                        <label class="block text-lg font-semibold text-navy mb-4">
+                            Add Your Debts
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Enter details for each debt you want to pay off</span>
+                            </span>
+                        </label>
+                        
+                        <!-- Professional Compact Debt Input Section -->
+                        <div class="professional-debt-input">
+                            <div class="debt-input-row">
+                                <div class="debt-input-item">
+                                    <label class="compact-label">Debt Name</label>
+                                    <input type="text" id="debtName" class="compact-input-field" placeholder="Credit Card, Personal Loan..." maxlength="50" />
+                                </div>
+                                <div class="debt-input-item">
+                                    <label class="compact-label">Balance (₹)</label>
+                                    <input type="number" id="debtBalance" class="compact-input-field" placeholder="1,50,000" min="1000" max="50000000" step="1000" />
+                                </div>
+                                <div class="debt-input-item">
+                                    <label class="compact-label">APR (%)</label>
+                                    <input type="number" id="debtAPR" class="compact-input-field" placeholder="18.5" min="0.1" max="50" step="0.1" />
+                                </div>
+                                <div class="debt-input-item">
+                                    <label class="compact-label">Min Payment (₹)</label>
+                                    <input type="number" id="debtMinPayment" class="compact-input-field" placeholder="7,500" min="100" max="100000" step="100" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="button" class="btn-success" onclick="addDebt()">
+                                <i class="fas fa-plus mr-2"></i>Add Debt
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Current Debts List -->
+                    <div id="debtsList" class="debt-list" style="display: none;">
+                        <h3 class="brand-font text-xl font-semibold text-navy mb-4">Current Debts</h3>
+                        <div class="debt-list-header">
+                            <span class="debt-item-field">Debt Name</span>
+                            <span class="debt-item-field">Balance</span>
+                            <span class="debt-item-field">APR</span>
+                            <span class="debt-item-field">Min Payment</span>
+                            <span class="debt-item-action">×</span>
+                        </div>
+                        <div id="debtsContainer"></div>
+                    </div>
+
+                    <!-- Multiple Extra Payment Strategies -->
+                    <div class="extra-payment-strategies">
+                        <h3 class="brand-font text-xl font-semibold text-navy mb-4">
+                            <i class="fas fa-rocket text-blue mr-2"></i>
+                            Multiple Extra Payment Strategies
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-blue cursor-help"></i>
+                                <span class="tooltiptext">You can enable multiple extra payment strategies simultaneously to accelerate debt payoff</span>
+                            </span>
+                        </h3>
+                        
+                        <!-- Strategy 1: Monthly Extra Payment -->
+                        <div class="extra-payment-strategy active" id="strategy1">
+                            <div class="strategy-header">
+                                <h4 class="font-semibold text-navy">Monthly Extra Payment</h4>
+                                <div class="strategy-toggle">
+                                    <input type="checkbox" id="enableStrategy1" checked class="mr-2">
+                                    <label for="enableStrategy1" class="text-sm font-semibold">Enable</label>
+                                </div>
+                            </div>
+                            <div class="extra-payment-grid">
+                                <div>
+                                    <label for="monthlyExtraAmount" class="block text-sm font-semibold text-navy mb-2">
+                                        Monthly Extra Amount (₹)
+                                    </label>
+                                    <input type="number" id="monthlyExtraAmount" name="monthlyExtraAmount" 
+                                           class="input-field" 
+                                           placeholder="10,000" value="10000" min="0" step="1000">
+                                </div>
+                                <div></div><div></div><div></div>
+                            </div>
+                        </div>
+
+                        <!-- Strategy 2: Quarterly Bonus -->
+                        <div class="extra-payment-strategy" id="strategy2">
+                            <div class="strategy-header">
+                                <h4 class="font-semibold text-navy">Quarterly Bonus Payment</h4>
+                                <div class="strategy-toggle">
+                                    <input type="checkbox" id="enableStrategy2" class="mr-2">
+                                    <label for="enableStrategy2" class="text-sm font-semibold">Enable</label>
+                                </div>
+                            </div>
+                            <div class="extra-payment-grid">
+                                <div>
+                                    <label for="quarterlyAmount" class="block text-sm font-semibold text-navy mb-2">
+                                        Quarterly Amount (₹)
+                                    </label>
+                                    <input type="number" id="quarterlyAmount" name="quarterlyAmount" 
+                                           class="input-field" 
+                                           placeholder="25,000" value="25000" min="0" step="5000">
+                                </div>
+                                <div></div><div></div><div></div>
+                            </div>
+                        </div>
+
+                        <!-- Strategy 3: Annual Windfall -->
+                        <div class="extra-payment-strategy" id="strategy3">
+                            <div class="strategy-header">
+                                <h4 class="font-semibold text-navy">Annual Windfall Payment</h4>
+                                <div class="strategy-toggle">
+                                    <input type="checkbox" id="enableStrategy3" class="mr-2">
+                                    <label for="enableStrategy3" class="text-sm font-semibold">Enable</label>
+                                </div>
+                            </div>
+                            <div class="extra-payment-grid">
+                                <div>
+                                    <label for="annualAmount" class="block text-sm font-semibold text-navy mb-2">
+                                        Annual Amount (₹)
+                                    </label>
+                                    <input type="number" id="annualAmount" name="annualAmount" 
+                                           class="input-field" 
+                                           placeholder="1,00,000" value="100000" min="0" step="10000">
+                                </div>
+                                <div>
+                                    <label for="annualMonth" class="block text-sm font-semibold text-navy mb-2">
+                                        Payment Month
+                                    </label>
+                                    <select id="annualMonth" name="annualMonth" class="input-field">
+                                        <option value="3">March</option>
+                                        <option value="6">June</option>
+                                        <option value="9">September</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                                <div></div><div></div>
+                            </div>
+                        </div>
+
+                        <!-- Strategy 4: One-Time Payment -->
+                        <div class="extra-payment-strategy" id="strategy4">
+                            <div class="strategy-header">
+                                <h4 class="font-semibold text-navy">One-Time Lump Sum Payment</h4>
+                                <div class="strategy-toggle">
+                                    <input type="checkbox" id="enableStrategy4" class="mr-2">
+                                    <label for="enableStrategy4" class="text-sm font-semibold">Enable</label>
+                                </div>
+                            </div>
+                            <div class="extra-payment-grid">
+                                <div>
+                                    <label for="oneTimeAmount" class="block text-sm font-semibold text-navy mb-2">
+                                        One-Time Amount (₹)
+                                    </label>
+                                    <input type="number" id="oneTimeAmount" name="oneTimeAmount" 
+                                           class="input-field" 
+                                           placeholder="2,00,000" value="200000" min="0" step="10000">
+                                </div>
+                                <div>
+                                    <label for="oneTimeMonth" class="block text-sm font-semibold text-navy mb-2">
+                                        Month
+                                    </label>
+                                    <input type="number" id="oneTimeMonth" name="oneTimeMonth" 
+                                           class="input-field" 
+                                           placeholder="12" value="12" min="1" max="120">
+                                </div>
+                                <div></div><div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto-calculation Notice -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                        <i class="fas fa-magic text-blue mr-2"></i>
+                        <span class="text-blue font-semibold">Results update automatically as you add debts and change values</span>
+                        <span class="loading ml-3" style="display: none;">
+                            <i class="fas fa-spinner fa-spin text-blue"></i>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-chart-line text-orange mr-4 text-2xl"></i>
+                    Payoff Analysis
+                </h2>
+                
+                <div id="results" style="display: none;">
+                    <div class="space-y-6 mb-8">
+                        <div class="result-highlight-green">
+                            <h3 class="text-2xl font-bold mb-3">Debt-Free Timeline</h3>
+                            <p class="text-4xl font-bold" id="payoffTime">24 months</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Total Debt:</span>
+                                <span class="font-bold text-xl text-navy" id="totalDebt">₹2,50,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Total Interest:</span>
+                                <span class="font-bold text-xl text-red-600" id="totalInterest">₹45,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Total Payments:</span>
+                                <span class="font-bold text-xl text-orange" id="totalPayments">₹2,95,000</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t pt-4">
+                                <span class="font-semibold text-lg">Average Monthly Payment:</span>
+                                <span class="font-bold text-xl text-blue" id="monthlyPayment">₹12,292</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Section: Normal vs Extra Payments -->
+                    <div class="comparison-section mb-8">
+                        <h3 class="brand-font text-xl font-semibold text-navy mb-4 flex items-center">
+                            <i class="fas fa-balance-scale text-orange mr-3"></i>
+                            Payment Strategy Comparison
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Normal Payments -->
+                            <div class="comparison-card normal-payment">
+                                <div class="comparison-header">
+                                    <h4 class="font-bold text-lg text-gray-700">Minimum Payments Only</h4>
+                                    <span class="comparison-badge badge-gray">Standard</span>
+                                </div>
+                                <div class="comparison-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Payoff Time:</span>
+                                        <span class="stat-value text-gray-600" id="normalPayoffTime">--</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Interest:</span>
+                                        <span class="stat-value text-gray-600" id="normalTotalInterest">--</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Paid:</span>
+                                        <span class="stat-value text-gray-600" id="normalTotalPaid">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Extra Payments -->
+                            <div class="comparison-card extra-payment">
+                                <div class="comparison-header">
+                                    <h4 class="font-bold text-lg text-green-700">With Extra Payments</h4>
+                                    <span class="comparison-badge badge-green">Optimized</span>
+                                </div>
+                                <div class="comparison-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Payoff Time:</span>
+                                        <span class="stat-value text-green-600" id="extraPayoffTime">--</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Interest:</span>
+                                        <span class="stat-value text-green-600" id="extraTotalInterest">--</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Paid:</span>
+                                        <span class="stat-value text-green-600" id="extraTotalPaid">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Savings Summary -->
+                        <div class="savings-summary">
+                            <div class="savings-highlight">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold">Time Saved:</span>
+                                    <span class="text-2xl font-bold text-blue" id="timeSaved">--</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold">Interest Saved:</span>
+                                    <span class="text-2xl font-bold text-green" id="interestSaved">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="debtChart"></canvas>
+                    </div>
+
+                    <!-- Payoff Order Section -->
+                    <div class="mt-8">
+                        <h3 class="brand-font text-2xl font-semibold text-navy mb-4">Payoff Order & Strategy</h3>
+                        <div id="payoffOrder" class="bg-gray-50 p-6 rounded-lg"></div>
+                    </div>
+
+                    <!-- Month-wise Payment Schedule with Individual Debt Tracking -->
+                    <div class="mt-8">
+                        <h3 class="brand-font text-2xl font-semibold text-navy mb-4">Month-wise Payment Schedule</h3>
+                        <p class="text-sm text-gray-600 mb-4">Detailed breakdown showing individual debt progress each month</p>
+                        
+                        <div class="results-table-container">
+                            <table class="results-table debt-table" id="projectionTable">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Total Payment</th>
+                                        <th>Interest Paid</th>
+                                        <th>Principal Paid</th>
+                                        <th>Total Remaining</th>
+                                        <th>Individual Debt Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectionTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination-controls">
+                            <button id="prevPage" class="pagination-btn" onclick="changePage(-1)" disabled>
+                                <i class="fas fa-chevron-left mr-2"></i>Previous
+                            </button>
+                            <span id="pageInfo" class="text-sm text-gray-600 font-semibold">Page 1 of 1</span>
+                            <button id="nextPage" class="pagination-btn" onclick="changePage(1)" disabled>
+                                Next<i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="text-center py-12">
+                    <i class="fas fa-credit-card text-gray-300 text-6xl mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-500 mb-2">No Debts Added Yet</h3>
+                    <p class="text-gray-400">Add your debts to see detailed payoff analysis and projections</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assumptions and Concepts Section -->
+        <div class="assumptions-section">
+            <h2 class="brand-font text-3xl font-semibold text-navy mb-6 flex items-center">
+                <i class="fas fa-lightbulb text-orange mr-4"></i>
+                Assumptions & Concepts
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="concept-item">
+                    <div class="concept-title">Debt Snowball Method</div>
+                    <div class="concept-description">
+                        Prioritizes paying off debts with the smallest balances first while making minimum payments on others. This method provides psychological motivation through quick wins and is ideal for those who need emotional encouragement.
+                    </div>
+                </div>
+                
+                <div class="concept-item">
+                    <div class="concept-title">Debt Avalanche Method</div>
+                    <div class="concept-description">
+                        Focuses on paying off debts with the highest interest rates first while making minimum payments on others. This method saves more money in the long term and is mathematically optimal for interest savings.
+                    </div>
+                </div>
+                
+                <div class="concept-item">
+                    <div class="concept-title">Multiple Extra Payment Strategies</div>
+                    <div class="concept-description">
+                        You can combine multiple extra payment approaches: monthly extras from salary savings, quarterly bonuses, annual windfalls like tax refunds, and one-time lump sums. Each strategy targets the highest priority debt based on your chosen method.
+                    </div>
+                </div>
+                
+                <div class="concept-item">
+                    <div class="concept-title">Interest Calculation</div>
+                    <div class="concept-description">
+                        Monthly interest is calculated as (Annual Percentage Rate ÷ 12) × Remaining Balance. Interest is applied before payments, and any payment above the interest amount reduces the principal balance.
+                    </div>
+                </div>
+                
+                <div class="concept-item">
+                    <div class="concept-title">Payment Allocation Priority</div>
+                    <div class="concept-description">
+                        1. Minimum payments on all debts to avoid penalties<br>
+                        2. All extra payments go to the priority debt (smallest balance for Snowball, highest APR for Avalanche)<br>
+                        3. When a debt is paid off, its minimum payment is added to extra payments for the next priority debt
+                    </div>
+                </div>
+                
+                <div class="concept-item">
+                    <div class="concept-title">Key Assumptions</div>
+                    <div class="concept-description">
+                        • Interest rates remain constant throughout the payoff period<br>
+                        • No additional debt is incurred during the payoff period<br>
+                        • All payments are made on time without any missed payments<br>
+                        • Extra payment amounts remain consistent as specified<br>
+                        • No fees or penalties are considered in calculations
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let debts = [];
+        let projectionData = [];
+        let currentPage = 1;
+        const rowsPerPage = 12;
+        let debtChart = null;
+        let autoUpdateTimeout = null;
+        
+        // Format number to Indian currency
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Show loading indicator
+        function showLoading() {
+            document.querySelector('.loading').style.display = 'inline';
+        }
+
+        // Hide loading indicator
+        function hideLoading() {
+            document.querySelector('.loading').style.display = 'none';
+        }
+
+        // Handle strategy toggle
+        function handleStrategyToggle(strategyId) {
+            const checkbox = document.getElementById(`enableStrategy${strategyId}`);
+            const strategyDiv = document.getElementById(`strategy${strategyId}`);
+            
+            if (checkbox.checked) {
+                strategyDiv.classList.add('active');
+            } else {
+                strategyDiv.classList.remove('active');
+            }
+            
+            triggerCalculation();
+        }
+
+        // Handle debt strategy selection
+        function handleDebtStrategy() {
+            const strategy = document.querySelector('input[name="debtStrategy"]:checked').value;
+            
+            // Update selection styling
+            document.querySelectorAll('.debt-strategy').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-strategy="${strategy}"]`).classList.add('selected');
+            
+            triggerCalculation();
+        }
+
+        // Add debt function
+        function addDebt() {
+            const name = document.getElementById('debtName').value.trim();
+            const balance = parseFloat(document.getElementById('debtBalance').value) || 0;
+            const apr = parseFloat(document.getElementById('debtAPR').value) || 0;
+            const minPayment = parseFloat(document.getElementById('debtMinPayment').value) || 0;
+            
+            if (name && balance > 0 && apr >= 0 && minPayment > 0) {
+                debts.push({
+                    id: Date.now(),
+                    name: name,
+                    balance: balance,
+                    originalBalance: balance,
+                    apr: apr,
+                    minPayment: minPayment
+                });
+                
+                // Clear form
+                document.getElementById('debtName').value = '';
+                document.getElementById('debtBalance').value = '';
+                document.getElementById('debtAPR').value = '';
+                document.getElementById('debtMinPayment').value = '';
+                
+                updateDebtsList();
+                triggerCalculation();
+            }
+        }
+
+        // Remove debt function
+        function removeDebt(id) {
+            debts = debts.filter(debt => debt.id !== id);
+            updateDebtsList();
+            triggerCalculation();
+        }
+
+        // Update debts list display
+        function updateDebtsList() {
+            const debtsList = document.getElementById('debtsList');
+            const debtsContainer = document.getElementById('debtsContainer');
+            
+            if (debts.length === 0) {
+                debtsList.style.display = 'none';
+                return;
+            }
+            
+            debtsList.style.display = 'block';
+            
+            let html = '';
+            debts.forEach((debt, index) => {
+                html += `
+                    <div class="debt-item">
+                        <span class="debt-item-field font-semibold">${debt.name}</span>
+                        <span class="debt-item-field">${formatINR(debt.balance)}</span>
+                        <span class="debt-item-field">${debt.apr}%</span>
+                        <span class="debt-item-field">${formatINR(debt.minPayment)}</span>
+                        <div class="debt-item-action">
+                            <button class="btn-remove" onclick="removeDebt(${debt.id})" title="Remove Debt">
+                                ×
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            debtsContainer.innerHTML = html;
+        }
+
+        // Calculate normal payoff (minimum payments only)
+        function calculateNormalPayoff(debts, strategy) {
+            let workingDebts = debts.map(debt => ({...debt}));
+            
+            // Sort debts based on strategy
+            if (strategy === 'snowball') {
+                workingDebts.sort((a, b) => a.balance - b.balance);
+            } else {
+                workingDebts.sort((a, b) => b.apr - a.apr);
+            }
+            
+            let month = 0;
+            let totalInterestPaid = 0;
+            let totalPayments = 0;
+            
+            while (workingDebts.some(debt => debt.balance > 0) && month < 600) {
+                month++;
+                let monthlyPayment = 0;
+                let monthlyInterest = 0;
+                
+                workingDebts.forEach(debt => {
+                    if (debt.balance > 0) {
+                        const interest = debt.balance * (debt.apr / 100 / 12);
+                        const minPayment = Math.min(debt.minPayment, debt.balance + interest);
+                        const principal = Math.max(0, minPayment - interest);
+                        
+                        debt.balance = Math.max(0, debt.balance - principal);
+                        
+                        monthlyPayment += minPayment;
+                        monthlyInterest += interest;
+                    }
+                });
+                
+                totalInterestPaid += monthlyInterest;
+                totalPayments += monthlyPayment;
+            }
+            
+            return {
+                months: month,
+                totalInterest: totalInterestPaid,
+                totalPaid: totalPayments
+            };
+        }
+        
+        function calculateDebtPayoff() {
+            if (debts.length === 0) {
+                document.getElementById('results').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            showLoading();
+
+            try {
+                const strategy = document.querySelector('input[name="debtStrategy"]:checked').value;
+                
+                // Get enabled extra payment strategies
+                const extraPayments = {};
+                if (document.getElementById('enableStrategy1').checked) {
+                    extraPayments.monthly = parseFloat(document.getElementById('monthlyExtraAmount').value) || 0;
+                }
+                if (document.getElementById('enableStrategy2').checked) {
+                    extraPayments.quarterly = parseFloat(document.getElementById('quarterlyAmount').value) || 0;
+                }
+                if (document.getElementById('enableStrategy3').checked) {
+                    extraPayments.annual = {
+                        amount: parseFloat(document.getElementById('annualAmount').value) || 0,
+                        month: parseInt(document.getElementById('annualMonth').value) || 12
+                    };
+                }
+                if (document.getElementById('enableStrategy4').checked) {
+                    extraPayments.oneTime = {
+                        amount: parseFloat(document.getElementById('oneTimeAmount').value) || 0,
+                        month: parseInt(document.getElementById('oneTimeMonth').value) || 12
+                    };
+                }
+                
+                // Create working copy of debts
+                let workingDebts = debts.map(debt => ({...debt}));
+                
+                // Sort debts based on strategy
+                if (strategy === 'snowball') {
+                    workingDebts.sort((a, b) => a.balance - b.balance);
+                } else {
+                    workingDebts.sort((a, b) => b.apr - a.apr);
+                }
+                
+                let month = 0;
+                let totalInterestPaid = 0;
+                let totalPayments = 0;
+                projectionData = [];
+                
+                // Calculate month by month
+                while (workingDebts.some(debt => debt.balance > 0) && month < 600) { // 50 year max
+                    month++;
+                    
+                    let monthlyPayment = 0;
+                    let monthlyInterest = 0;
+                    let monthlyPrincipal = 0;
+                    let debtDetails = [];
+                    
+                    // Calculate minimum payments for all debts
+                    workingDebts.forEach(debt => {
+                        if (debt.balance > 0) {
+                            const interest = debt.balance * (debt.apr / 100 / 12);
+                            const minPayment = Math.min(debt.minPayment, debt.balance + interest);
+                            const principal = Math.max(0, minPayment - interest);
+                            
+                            debt.balance = Math.max(0, debt.balance - principal);
+                            
+                            monthlyPayment += minPayment;
+                            monthlyInterest += interest;
+                            monthlyPrincipal += principal;
+                            
+                            debtDetails.push({
+                                name: debt.name,
+                                balance: debt.balance,
+                                payment: minPayment,
+                                interest: interest,
+                                principal: principal,
+                                status: debt.balance > 0 ? 'active' : 'paid-off'
+                            });
+                        }
+                    });
+                    
+                    // Apply extra payments
+                    let totalExtraPayment = 0;
+                    
+                    // Monthly extra payment
+                    if (extraPayments.monthly) {
+                        totalExtraPayment += extraPayments.monthly;
+                    }
+                    
+                    // Quarterly extra payment
+                    if (extraPayments.quarterly && month % 3 === 0) {
+                        totalExtraPayment += extraPayments.quarterly;
+                    }
+                    
+                    // Annual extra payment
+                    if (extraPayments.annual && month % 12 === extraPayments.annual.month % 12) {
+                        totalExtraPayment += extraPayments.annual.amount;
+                    }
+                    
+                    // One-time extra payment
+                    if (extraPayments.oneTime && month === extraPayments.oneTime.month) {
+                        totalExtraPayment += extraPayments.oneTime.amount;
+                    }
+                    
+                    // Apply extra payment to target debt
+                    if (totalExtraPayment > 0) {
+                        const targetDebt = workingDebts.find(debt => debt.balance > 0);
+                        if (targetDebt) {
+                            const actualExtraPayment = Math.min(totalExtraPayment, targetDebt.balance);
+                            targetDebt.balance -= actualExtraPayment;
+                            monthlyPayment += actualExtraPayment;
+                            monthlyPrincipal += actualExtraPayment;
+                            
+                            // Update debt details
+                            const targetDetail = debtDetails.find(d => d.name === targetDebt.name);
+                            if (targetDetail) {
+                                targetDetail.balance = targetDebt.balance;
+                                targetDetail.payment += actualExtraPayment;
+                                targetDetail.principal += actualExtraPayment;
+                                targetDetail.status = targetDebt.balance > 0 ? 'active' : 'paid-off';
+                            }
+                        }
+                    }
+                    
+                    totalInterestPaid += monthlyInterest;
+                    totalPayments += monthlyPayment;
+                    
+                    const remainingBalance = workingDebts.reduce((sum, debt) => sum + debt.balance, 0);
+                    
+                    projectionData.push({
+                        month: month,
+                        totalPayment: monthlyPayment,
+                        interestPaid: monthlyInterest,
+                        principalPaid: monthlyPrincipal,
+                        remainingBalance: remainingBalance,
+                        debtDetails: debtDetails
+                    });
+                }
+                
+                const totalDebt = debts.reduce((sum, debt) => sum + debt.balance, 0);
+                const avgMonthlyPayment = totalPayments / month;
+                
+                // Calculate comparison with normal payments (minimum only)
+                const normalPayoffResult = calculateNormalPayoff(debts, strategy);
+                
+                // Update main display
+                document.getElementById('payoffTime').textContent = `${month} months`;
+                document.getElementById('totalDebt').textContent = formatINR(totalDebt);
+                document.getElementById('totalInterest').textContent = formatINR(totalInterestPaid);
+                document.getElementById('totalPayments').textContent = formatINR(totalPayments);
+                document.getElementById('monthlyPayment').textContent = formatINR(avgMonthlyPayment);
+                
+                // Update comparison display
+                document.getElementById('normalPayoffTime').textContent = `${normalPayoffResult.months} months`;
+                document.getElementById('normalTotalInterest').textContent = formatINR(normalPayoffResult.totalInterest);
+                document.getElementById('normalTotalPaid').textContent = formatINR(normalPayoffResult.totalPaid);
+                
+                document.getElementById('extraPayoffTime').textContent = `${month} months`;
+                document.getElementById('extraTotalInterest').textContent = formatINR(totalInterestPaid);
+                document.getElementById('extraTotalPaid').textContent = formatINR(totalPayments);
+                
+                // Calculate and display savings
+                const timeSaved = normalPayoffResult.months - month;
+                const interestSaved = normalPayoffResult.totalInterest - totalInterestPaid;
+                
+                document.getElementById('timeSaved').textContent = `${timeSaved} months`;
+                document.getElementById('interestSaved').textContent = formatINR(interestSaved);
+                
+                // Update payoff order
+                updatePayoffOrder(workingDebts, strategy);
+                
+                // Update table and chart
+                updateProjectionTable();
+                createChart();
+            } catch (error) {
+                console.error('Calculation error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function updatePayoffOrder(sortedDebts, strategy) {
+            const payoffOrderDiv = document.getElementById('payoffOrder');
+            let html = `<h4 class="font-semibold mb-4 text-lg">
+                ${strategy === 'snowball' ? 'Snowball Strategy - Smallest Balance First' : 'Avalanche Strategy - Highest Interest Rate First'}
+            </h4>`;
+            
+            html += '<div class="space-y-3">';
+            sortedDebts.forEach((debt, index) => {
+                const strategyText = strategy === 'snowball' 
+                    ? `Balance: ${formatINR(debt.originalBalance)}` 
+                    : `APR: ${debt.apr}%`;
+                
+                html += `
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg border">
+                        <div class="flex items-center">
+                            <div class="payoff-order mr-4">${index + 1}</div>
+                            <div>
+                                <div class="font-semibold">${debt.name}</div>
+                                <div class="text-sm text-gray-600">${strategyText} | Min Payment: ${formatINR(debt.minPayment)}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold">${formatINR(debt.originalBalance)}</div>
+                            <div class="text-sm text-gray-600">${debt.apr}% APR</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            payoffOrderDiv.innerHTML = html;
+        }
+
+        function updateProjectionTable() {
+            const tbody = document.getElementById('projectionTableBody');
+            const totalPages = Math.ceil(projectionData.length / rowsPerPage);
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const pageData = projectionData.slice(startIndex, endIndex);
+            
+            tbody.innerHTML = '';
+            
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                // Create detailed debt status
+                let debtStatusHtml = '<div class="debt-detail-cell">';
+                row.debtDetails.forEach(debt => {
+                    const statusClass = debt.status === 'paid-off' ? 'debt-paid-off' : '';
+                    debtStatusHtml += `
+                        <div class="debt-item-detail">
+                            <span class="debt-name ${statusClass}">${debt.name}</span>
+                            <span class="debt-balance ${statusClass}">${formatINR(debt.balance)}</span>
+                        </div>
+                    `;
+                });
+                debtStatusHtml += '</div>';
+                
+                tr.innerHTML = `
+                    <td class="font-semibold">${row.month}</td>
+                    <td class="font-semibold text-orange">${formatINR(row.totalPayment)}</td>
+                    <td class="text-red-600">${formatINR(row.interestPaid)}</td>
+                    <td class="text-green-600">${formatINR(row.principalPaid)}</td>
+                    <td class="font-semibold text-navy">${formatINR(row.remainingBalance)}</td>
+                    <td>${debtStatusHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Update pagination controls
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(projectionData.length / rowsPerPage);
+            currentPage += direction;
+            
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            updateProjectionTable();
+        }
+
+        function createChart() {
+            const ctx = document.getElementById('debtChart').getContext('2d');
+            
+            if (debtChart) {
+                debtChart.destroy();
+            }
+
+            const labels = projectionData.map(d => `Month ${d.month}`);
+            const balanceData = projectionData.map(d => d.remainingBalance);
+            const interestData = projectionData.map(d => {
+                const cumulativeInterest = projectionData.slice(0, projectionData.indexOf(d) + 1)
+                    .reduce((sum, row) => sum + row.interestPaid, 0);
+                return cumulativeInterest;
+            });
+
+            debtChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Remaining Debt Balance',
+                        data: balanceData,
+                        borderColor: '#0B1F3B',
+                        backgroundColor: 'rgba(11, 31, 59, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Cumulative Interest Paid',
+                        data: interestData,
+                        borderColor: '#dc3545',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        fill: false,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Debt Payoff Progress with Multiple Strategies'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('en-IN', {
+                                        style: 'currency',
+                                        currency: 'INR',
+                                        notation: 'compact',
+                                        maximumFractionDigits: 1
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Auto-update functionality
+        function triggerCalculation() {
+            if (autoUpdateTimeout) {
+                clearTimeout(autoUpdateTimeout);
+            }
+            
+            autoUpdateTimeout = setTimeout(() => {
+                calculateDebtPayoff();
+            }, 500);
+        }
+
+        // Initialize the calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for auto-update
+            const inputs = [
+                'monthlyExtraAmount', 'quarterlyAmount', 'annualAmount', 'annualMonth', 
+                'oneTimeAmount', 'oneTimeMonth'
+            ];
+            
+            inputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('input', triggerCalculation);
+                    input.addEventListener('change', triggerCalculation);
+                }
+            });
+
+            // Add event listeners for strategy toggles
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`enableStrategy${i}`).addEventListener('change', function() {
+                    handleStrategyToggle(i);
+                });
+            }
+
+            // Add event listeners for debt strategy
+            document.querySelectorAll('input[name="debtStrategy"]').forEach(radio => {
+                radio.addEventListener('change', handleDebtStrategy);
+            });
+
+            // Add event listeners for debt strategy option clicks
+            document.querySelectorAll('.debt-strategy').forEach(option => {
+                option.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    handleDebtStrategy();
+                });
+            });
+
+            // Add Enter key support for debt input
+            ['debtName', 'debtBalance', 'debtAPR', 'debtMinPayment'].forEach(id => {
+                document.getElementById(id).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addDebt();
+                    }
+                });
+            });
+
+            // Initialize strategy toggles
+            handleStrategyToggle(1);
+
+            // Initial state
+            document.getElementById('emptyState').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyWiseGuide – Mortgage Calculator (₹ INR)</title>
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8">
+    
+    <!-- CDN Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    <style>
+        :root {
+            --navy: #0B1F3B;
+            --orange: #FF7A21;
+            --white: #FFFFFF;
+            --light-gray: #F7FAFC;
+            --green: #10B981;
+            --blue: #3B82F6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--navy);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+        }
+        
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-navy { background-color: var(--navy); }
+        .bg-orange { background-color: var(--orange); }
+        .bg-green { background-color: var(--green); }
+        .bg-blue { background-color: var(--blue); }
+        .text-navy { color: var(--navy); }
+        .text-orange { color: var(--orange); }
+        .text-green { color: var(--green); }
+        .text-blue { color: var(--blue); }
+        .border-orange { border-color: var(--orange); }
+        .border-green { border-color: var(--green); }
+        .border-blue { border-color: var(--blue); }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a365d 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: var(--orange);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary {
+            background-color: var(--orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e5651d;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--orange);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--orange);
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--green);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background-color: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-info:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--orange);
+            color: white;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--navy);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .input-field:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 122, 33, 0.1);
+            outline: none;
+        }
+        
+        .period-input {
+            width: 80px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--navy);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .result-highlight {
+            background: linear-gradient(135deg, var(--orange), #ff8c42);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-green {
+            background: linear-gradient(135deg, var(--green), #10b982);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .result-highlight-blue {
+            background: linear-gradient(135deg, var(--blue), #3b83f6);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .loading {
+            display: none;
+            color: var(--orange);
+        }
+        
+        .extra-payment-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .extra-payment-option:hover {
+            border-color: var(--orange);
+        }
+        
+        .extra-payment-option.selected {
+            border-color: var(--orange);
+            background-color: rgba(255, 122, 33, 0.1);
+        }
+        
+        .extra-payment-option.basic.selected {
+            border-color: var(--green);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        
+        .extra-payment-option.advanced.selected {
+            border-color: var(--blue);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .payout-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payout-option:hover {
+            border-color: var(--orange);
+        }
+        
+        .payout-option.selected {
+            border-color: var(--orange);
+            background-color: rgba(255, 122, 33, 0.1);
+        }
+        
+        .payout-results {
+            display: none;
+        }
+        
+        .payout-results.active {
+            display: block;
+        }
+
+        .extra-payment-details {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .extra-payment-details.active {
+            display: block;
+        }
+
+        .one-time-payment-row {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 12px;
+        }
+
+        .one-time-payment-row input {
+            flex: 1;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-small:hover {
+            background: #059669;
+        }
+
+        .btn-small.btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-small.btn-danger:hover {
+            background: #c82333;
+        }
+
+        .added-payments {
+            background: #e8f5e8;
+            border-radius: 6px;
+            padding: 8px;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .schedule-table th {
+            background: var(--navy);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .schedule-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .schedule-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .pagination-btn {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #1a365d;
+        }
+
+        .pagination-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .period-input {
+                width: 60px;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .mobile-menu-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/415cfa8f4313163509e7eeacb4384ed8" alt="MoneyWiseGuide Logo" class="h-10 w-10">
+                    <div class="brand-font text-2xl font-bold text-white">MoneyWiseGuide</div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+                    
+                    <!-- Calculators Dropdown -->
+                    <div class="dropdown">
+                        <a href="/calculators" class="nav-link"><i class="fas fa-calculator mr-2"></i>Calculators <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/calculators/fixed-deposit"><i class="fas fa-university text-orange mr-2"></i>Fixed Deposit Calculator</a>
+                            <a href="/calculators/recurring-deposit"><i class="fas fa-calendar-alt text-orange mr-2"></i>Recurring Deposit Calculator</a>
+                            <a href="/calculators/mortgage"><i class="fas fa-home text-orange mr-2"></i>Mortgage Calculator</a>
+                            <a href="/calculators/sip"><i class="fas fa-chart-line text-orange mr-2"></i>SIP Calculator</a>
+                            <a href="/calculators/lumpsum"><i class="fas fa-coins text-orange mr-2"></i>Lumpsum Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Dropdown -->
+                    <div class="dropdown">
+                        <a href="/tools" class="nav-link"><i class="fas fa-tools mr-2"></i>Tools <i class="fas fa-chevron-down ml-1"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/tools/budget-tracker"><i class="fas fa-chart-pie text-orange mr-2"></i>Budget Tracker</a>
+                            <a href="/tools/expense-manager"><i class="fas fa-shopping-cart text-orange mr-2"></i>Expense Manager</a>
+                            <a href="/tools/portfolio-tracker"><i class="fas fa-briefcase text-orange mr-2"></i>Portfolio Tracker</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/blogs" class="nav-link"><i class="fas fa-blog mr-2"></i>Blogs</a>
+                </nav>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <a href="/login" class="btn-secondary text-sm">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </a>
+                    <a href="/register" class="btn-primary text-sm">
+                        <i class="fas fa-user-plus mr-2"></i>Register
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="mobile-menu md:hidden">
+                    <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="text-sm">
+                <a href="/" class="text-orange hover:underline">Home</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <a href="/calculators" class="text-orange hover:underline">Calculators</a> 
+                <span class="mx-2 text-gray-500">/</span>
+                <span class="text-gray-700">Mortgage Calculator</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="brand-font text-5xl font-bold text-navy mb-6">Mortgage Calculator</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Calculate your EMI, explore different extra payment strategies, and view complete amortization schedules with real-time updates.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Calculator Form -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-home text-orange mr-4 text-2xl"></i>
+                    Loan Parameters
+                </h2>
+                
+                <form id="mortgageForm" class="space-y-8">
+                    <!-- Loan Amount -->
+                    <div>
+                        <label for="loanAmount" class="block text-lg font-semibold text-navy mb-3">
+                            Loan Amount (₹)
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">The total amount you're borrowing from the lender</span>
+                            </span>
+                        </label>
+                        <input type="number" id="loanAmount" name="loanAmount" 
+                               class="input-field text-lg" 
+                               placeholder="Enter loan amount" value="3000000" min="100000" step="100000">
+                        <div id="loanAmountError" class="error-message"></div>
+                    </div>
+
+                    <!-- Annual Interest Rate -->
+                    <div>
+                        <label for="interestRate" class="block text-lg font-semibold text-navy mb-3">
+                            Annual Interest Rate (%)
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">The yearly interest rate charged by the lender</span>
+                            </span>
+                        </label>
+                        <input type="number" id="interestRate" name="interestRate" 
+                               class="input-field text-lg" 
+                               placeholder="Enter interest rate" value="8.5" min="0" max="20" step="0.1">
+                        <div id="interestRateError" class="error-message"></div>
+                    </div>
+
+                    <!-- Loan Term -->
+                    <div>
+                        <label for="loanTerm" class="block text-lg font-semibold text-navy mb-3">
+                            Loan Term (Years)
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">The duration over which you'll repay the loan</span>
+                            </span>
+                        </label>
+                        <input type="number" id="loanTerm" name="loanTerm" 
+                               class="input-field text-lg" 
+                               placeholder="Enter loan term" value="20" min="1" max="30" step="1">
+                        <div id="loanTermError" class="error-message"></div>
+                    </div>
+
+                    <!-- Extra Payment Options -->
+                    <div>
+                        <label class="block text-lg font-semibold text-navy mb-3">
+                            Extra Payment Strategy
+                            <span class="tooltip ml-2">
+                                <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                <span class="tooltiptext">Choose your extra payment approach to reduce interest and loan term</span>
+                            </span>
+                        </label>
+                        <div class="space-y-3">
+                            <div class="extra-payment-option selected basic" data-strategy="none">
+                                <div class="flex items-center">
+                                    <input type="radio" id="noExtra" name="extraPaymentStrategy" value="none" checked class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-green">No Extra Payments</h4>
+                                        <p class="text-sm text-gray-600">Standard EMI-only loan repayment</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra-payment-option" data-strategy="basic">
+                                <div class="flex items-center">
+                                    <input type="radio" id="basicExtra" name="extraPaymentStrategy" value="basic" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Basic Extra Payments</h4>
+                                        <p class="text-sm text-gray-600">Monthly extra payments only</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="extra-payment-option advanced" data-strategy="advanced">
+                                <div class="flex items-center">
+                                    <input type="radio" id="advancedExtra" name="extraPaymentStrategy" value="advanced" class="mr-3">
+                                    <div>
+                                        <h4 class="font-semibold text-blue">Advanced Extra Payments</h4>
+                                        <p class="text-sm text-gray-600">Multiple payment frequencies + one-time payments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Extra Payment Details -->
+                    <div id="basicExtraDetails" class="extra-payment-details">
+                        <div>
+                            <label for="monthlyExtra" class="block text-lg font-semibold text-navy mb-3">
+                                Monthly Extra Payment (₹)
+                                <span class="tooltip ml-2">
+                                    <i class="fas fa-info-circle text-orange cursor-help"></i>
+                                    <span class="tooltiptext">Additional amount paid every month towards principal</span>
+                                </span>
+                            </label>
+                            <input type="number" id="monthlyExtra" name="monthlyExtra" 
+                                   class="input-field text-lg" 
+                                   placeholder="Enter monthly extra amount" value="0" min="0" step="1000">
+                        </div>
+                    </div>
+
+                    <!-- Advanced Extra Payment Details -->
+                    <div id="advancedExtraDetails" class="extra-payment-details">
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="monthlyExtraAdv" class="block text-sm font-semibold text-navy mb-2">
+                                        Monthly Extra (₹)
+                                    </label>
+                                    <input type="number" id="monthlyExtraAdv" name="monthlyExtraAdv" 
+                                           class="input-field" 
+                                           placeholder="0" value="0" min="0" step="1000">
+                                </div>
+                                <div>
+                                    <label for="quarterlyExtra" class="block text-sm font-semibold text-navy mb-2">
+                                        Quarterly Extra (₹)
+                                    </label>
+                                    <input type="number" id="quarterlyExtra" name="quarterlyExtra" 
+                                           class="input-field" 
+                                           placeholder="0" value="0" min="0" step="5000">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="semiAnnualExtra" class="block text-sm font-semibold text-navy mb-2">
+                                        Semi-Annual Extra (₹)
+                                    </label>
+                                    <input type="number" id="semiAnnualExtra" name="semiAnnualExtra" 
+                                           class="input-field" 
+                                           placeholder="0" value="0" min="0" step="10000">
+                                </div>
+                                <div>
+                                    <label for="yearlyExtra" class="block text-sm font-semibold text-navy mb-2">
+                                        Yearly Extra (₹)
+                                    </label>
+                                    <input type="number" id="yearlyExtra" name="yearlyExtra" 
+                                           class="input-field" 
+                                           placeholder="0" value="0" min="0" step="25000">
+                                </div>
+                            </div>
+                            
+                            <!-- One-Time Payments -->
+                            <div>
+                                <h4 class="text-md font-semibold text-navy mb-3">One-Time Extra Payments</h4>
+                                <div id="oneTimePayments">
+                                    <div class="one-time-payment-row">
+                                        <div>
+                                            <label class="block text-xs font-medium mb-1">Month</label>
+                                            <input type="number" class="input-field payment-month" placeholder="12" min="1">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium mb-1">Amount (₹)</label>
+                                            <input type="number" class="input-field payment-amount" placeholder="50000">
+                                        </div>
+                                        <button type="button" class="btn-small" onclick="addOneTimePayment()">Add</button>
+                                    </div>
+                                </div>
+                                <div id="addedPayments"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto-calculation Notice -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                        <i class="fas fa-magic text-blue mr-2"></i>
+                        <span class="text-blue font-semibold">Results update automatically as you change values</span>
+                        <span class="loading ml-3" style="display: none;">
+                            <i class="fas fa-spinner fa-spin text-blue"></i>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card-hover p-8">
+                <h2 class="brand-font text-3xl font-semibold text-navy mb-8 flex items-center">
+                    <i class="fas fa-chart-pie text-orange mr-4 text-2xl"></i>
+                    Loan Projection
+                </h2>
+                
+                <div id="results">
+                    <div class="space-y-6 mb-8">
+                        <div class="result-highlight">
+                            <h3 class="text-2xl font-bold mb-3">Monthly EMI</h3>
+                            <p class="text-4xl font-bold" id="monthlyEMI">₹25,984</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-lg space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Loan Amount:</span>
+                                <span class="font-bold text-xl text-navy" id="loanPrincipal">₹30,00,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Total Interest:</span>
+                                <span class="font-bold text-xl text-orange" id="totalInterest">₹32,36,254</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-lg">Total Payment:</span>
+                                <span class="font-bold text-xl text-green-600" id="totalPayment">₹62,36,254</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t pt-4">
+                                <span class="font-semibold text-lg">Actual Loan Term:</span>
+                                <span class="font-bold text-xl text-blue" id="actualTerm">20 years</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+
+                    <!-- Amortization Schedule -->
+                    <div class="mt-8">
+                        <h3 class="brand-font text-2xl font-semibold text-navy mb-4">Amortization Schedule</h3>
+                        <div class="overflow-x-auto">
+                            <table class="schedule-table" id="scheduleTable">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>EMI</th>
+                                        <th>Principal</th>
+                                        <th>Interest</th>
+                                        <th>Extra Payment</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scheduleTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination-controls">
+                            <button id="prevPage" class="pagination-btn" onclick="changePage(-1)" disabled>Previous</button>
+                            <span id="pageInfo" class="text-sm text-gray-600">Page 1 of 1</span>
+                            <button id="nextPage" class="pagination-btn" onclick="changePage(1)" disabled>Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let amortizationData = [];
+        let currentPage = 1;
+        const rowsPerPage = 12;
+        let paymentChart = null;
+        let oneTimePayments = [];
+        let autoUpdateTimeout = null;
+        
+        // Format number to Indian currency
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Format number without currency symbol
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-IN').format(Math.round(num));
+        }
+
+        // Show loading indicator
+        function showLoading() {
+            document.querySelector('.loading').style.display = 'inline';
+        }
+
+        // Hide loading indicator
+        function hideLoading() {
+            document.querySelector('.loading').style.display = 'none';
+        }
+
+        // Handle extra payment strategy selection
+        function handleExtraPaymentStrategy() {
+            const strategy = document.querySelector('input[name="extraPaymentStrategy"]:checked').value;
+            
+            // Hide all details
+            document.querySelectorAll('.extra-payment-details').forEach(detail => {
+                detail.classList.remove('active');
+            });
+            
+            // Show relevant details
+            if (strategy === 'basic') {
+                document.getElementById('basicExtraDetails').classList.add('active');
+            } else if (strategy === 'advanced') {
+                document.getElementById('advancedExtraDetails').classList.add('active');
+            }
+            
+            // Update selection styling
+            document.querySelectorAll('.extra-payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-strategy="${strategy}"]`).classList.add('selected');
+            
+            triggerCalculation();
+        }
+        
+        // Add one-time payment
+        function addOneTimePayment() {
+            const rows = document.querySelectorAll('.one-time-payment-row');
+            const lastRow = rows[rows.length - 1];
+            const monthInput = lastRow.querySelector('.payment-month');
+            const amountInput = lastRow.querySelector('.payment-amount');
+            
+            const month = parseInt(monthInput.value);
+            const amount = parseFloat(amountInput.value);
+            
+            if (month && amount && month > 0) {
+                oneTimePayments.push({ month, amount });
+                oneTimePayments.sort((a, b) => a.month - b.month);
+                
+                // Clear inputs
+                monthInput.value = '';
+                amountInput.value = '';
+                
+                // Update display and recalculate
+                updateOneTimePaymentsDisplay();
+                triggerCalculation();
+            }
+        }
+        
+        // Update one-time payments display
+        function updateOneTimePaymentsDisplay() {
+            const addedPayments = document.getElementById('addedPayments');
+            if (oneTimePayments.length === 0) {
+                addedPayments.innerHTML = '';
+                return;
+            }
+            
+            let html = '<div class="added-payments"><strong>Added Payments:</strong><br>';
+            oneTimePayments.forEach((payment, index) => {
+                html += `Month ${payment.month}: ${formatINR(payment.amount)} 
+                         <button class="btn-small btn-danger ml-2" onclick="removeOneTimePayment(${index})">Remove</button><br>`;
+            });
+            html += '</div>';
+            addedPayments.innerHTML = html;
+        }
+        
+        // Remove one-time payment
+        function removeOneTimePayment(index) {
+            oneTimePayments.splice(index, 1);
+            updateOneTimePaymentsDisplay();
+            triggerCalculation();
+        }
+        
+        // Calculate EMI
+        function calculateEMI(principal, annualRate, years) {
+            const monthlyRate = annualRate / 100 / 12;
+            const numberOfPayments = years * 12;
+            
+            if (monthlyRate === 0) {
+                return principal / numberOfPayments;
+            }
+            
+            return (principal * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                   (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+        }
+        
+        // Build amortization schedule
+        function buildAmortizationSchedule(principal, annualRate, years, monthlyExtra, quarterlyExtra, semiAnnualExtra, yearlyExtra, oneTimeExtras) {
+            const monthlyRate = annualRate / 100 / 12;
+            const emi = calculateEMI(principal, annualRate, years);
+            let balance = principal;
+            const schedule = [];
+            let month = 1;
+            
+            while (balance > 0.01 && month <= years * 12 * 2) { // Safety limit
+                const interestPayment = balance * monthlyRate;
+                let principalPayment = emi - interestPayment;
+                
+                // Calculate extra payments
+                let extraPayment = monthlyExtra;
+                if (month % 3 === 0) extraPayment += quarterlyExtra;
+                if (month % 6 === 0) extraPayment += semiAnnualExtra;
+                if (month % 12 === 0) extraPayment += yearlyExtra;
+                
+                // Add one-time payments
+                const oneTimePayment = oneTimeExtras.find(p => p.month === month);
+                if (oneTimePayment) {
+                    extraPayment += oneTimePayment.amount;
+                }
+                
+                // Ensure we don't overpay
+                if (principalPayment + extraPayment > balance) {
+                    principalPayment = balance;
+                    extraPayment = 0;
+                }
+                
+                balance -= (principalPayment + extraPayment);
+                
+                schedule.push({
+                    month: month,
+                    openingBalance: balance + principalPayment + extraPayment,
+                    emi: emi,
+                    interest: interestPayment,
+                    principal: principalPayment,
+                    extraPayment: extraPayment,
+                    closingBalance: Math.max(0, balance)
+                });
+                
+                month++;
+            }
+            
+            return schedule;
+        }
+        
+        // Create payment breakdown chart
+        function createChart(principal, totalInterest, totalExtra) {
+            const ctx = document.getElementById('paymentChart').getContext('2d');
+            
+            if (paymentChart) {
+                paymentChart.destroy();
+            }
+            
+            paymentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Principal', 'Interest', 'Extra Payments'],
+                    datasets: [{
+                        data: [principal, totalInterest, totalExtra],
+                        backgroundColor: [
+                            '#0B1F3B',
+                            '#FF7A21',
+                            '#10B981'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Payment Breakdown'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Display amortization schedule with pagination
+        function displayAmortizationSchedule(data) {
+            const tbody = document.getElementById('scheduleTableBody');
+            const totalPages = Math.ceil(data.length / rowsPerPage);
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const pageData = data.slice(startIndex, endIndex);
+            
+            tbody.innerHTML = '';
+            
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.month}</td>
+                    <td>${formatINR(row.emi)}</td>
+                    <td>${formatINR(row.principal)}</td>
+                    <td>${formatINR(row.interest)}</td>
+                    <td>${formatINR(row.extraPayment)}</td>
+                    <td>${formatINR(row.closingBalance)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Update pagination controls
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+        
+        // Change page
+        function changePage(direction) {
+            const totalPages = Math.ceil(amortizationData.length / rowsPerPage);
+            currentPage += direction;
+            
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            displayAmortizationSchedule(amortizationData);
+        }
+        
+        // Main calculation function
+        function calculateMortgage() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 0;
+            
+            if (loanAmount <= 0 || interestRate < 0 || loanTerm <= 0) {
+                return;
+            }
+
+            showLoading();
+            
+            // Get extra payment values based on strategy
+            const strategy = document.querySelector('input[name="extraPaymentStrategy"]:checked').value;
+            let monthlyExtra = 0, quarterlyExtra = 0, semiAnnualExtra = 0, yearlyExtra = 0;
+            
+            if (strategy === 'basic') {
+                monthlyExtra = parseFloat(document.getElementById('monthlyExtra').value) || 0;
+            } else if (strategy === 'advanced') {
+                monthlyExtra = parseFloat(document.getElementById('monthlyExtraAdv').value) || 0;
+                quarterlyExtra = parseFloat(document.getElementById('quarterlyExtra').value) || 0;
+                semiAnnualExtra = parseFloat(document.getElementById('semiAnnualExtra').value) || 0;
+                yearlyExtra = parseFloat(document.getElementById('yearlyExtra').value) || 0;
+            }
+            
+            // Calculate EMI and build schedule
+            const emi = calculateEMI(loanAmount, interestRate, loanTerm);
+            amortizationData = buildAmortizationSchedule(
+                loanAmount, 
+                interestRate, 
+                loanTerm, 
+                monthlyExtra, 
+                quarterlyExtra, 
+                semiAnnualExtra, 
+                yearlyExtra, 
+                oneTimePayments
+            );
+            
+            // Calculate totals
+            const totalInterest = amortizationData.reduce((sum, row) => sum + row.interest, 0);
+            const totalExtraPayments = amortizationData.reduce((sum, row) => sum + row.extraPayment, 0);
+            const totalPayment = loanAmount + totalInterest + totalExtraPayments;
+            const actualTermMonths = amortizationData.length;
+            const actualTermYears = Math.floor(actualTermMonths / 12);
+            const actualTermMonthsRemainder = actualTermMonths % 12;
+            
+            // Update results display
+            document.getElementById('monthlyEMI').textContent = formatINR(emi);
+            document.getElementById('loanPrincipal').textContent = formatINR(loanAmount);
+            document.getElementById('totalInterest').textContent = formatINR(totalInterest);
+            document.getElementById('totalPayment').textContent = formatINR(totalPayment);
+            
+            let termText = `${actualTermYears} years`;
+            if (actualTermMonthsRemainder > 0) {
+                termText += `, ${actualTermMonthsRemainder} months`;
+            }
+            document.getElementById('actualTerm').textContent = termText;
+            
+            // Create chart
+            createChart(loanAmount, totalInterest, totalExtraPayments);
+            
+            // Display schedule
+            currentPage = 1;
+            displayAmortizationSchedule(amortizationData);
+            
+            hideLoading();
+        }
+
+        // Auto-update functionality
+        function triggerCalculation() {
+            if (autoUpdateTimeout) {
+                clearTimeout(autoUpdateTimeout);
+            }
+            
+            autoUpdateTimeout = setTimeout(() => {
+                calculateMortgage();
+            }, 500);
+        }
+
+        // Initialize the calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for auto-update
+            const inputs = ['loanAmount', 'interestRate', 'loanTerm', 'monthlyExtra', 'monthlyExtraAdv', 'quarterlyExtra', 'semiAnnualExtra', 'yearlyExtra'];
+            
+            inputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('input', triggerCalculation);
+                    input.addEventListener('change', triggerCalculation);
+                }
+            });
+
+            // Add event listeners for extra payment strategy
+            document.querySelectorAll('input[name="extraPaymentStrategy"]').forEach(radio => {
+                radio.addEventListener('change', handleExtraPaymentStrategy);
+            });
+
+            // Add event listeners for extra payment option clicks
+            document.querySelectorAll('.extra-payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    handleExtraPaymentStrategy();
+                });
+            });
+
+            // Initial calculation
+            calculateMortgage();
+        });
+    </script>
+</body>
+</html>
